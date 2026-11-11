@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic 7: Past Ability Paragraph Builder Game</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f0fdf4;
+        }
+        h1, h2, h3, .font-heading {
+            font-family: 'Fredoka', sans-serif;
+        }
+        .bounce-hover:hover {
+            transform: translateY(-3px);
+            transition: all 0.2s ease;
+        }
+        .pulse-star {
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 flex flex-col justify-between">
+
+    <!-- Top Navigation / Header -->
+    <header class="bg-emerald-600 text-white shadow-md p-4 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <span class="text-3xl"><i class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i></span>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold leading-none">Topic 7: Time Machine Paragraphs</h1>
+                    <p class="text-xs text-emerald-100 font-semibold mt-1">Past Abilities (Could / Couldn't)</p>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="flex items-center gap-4 bg-emerald-700/60 px-4 py-2 rounded-2xl border border-emerald-500">
+                <div class="flex items-center gap-1.5">
+                    <i class="fa-solid fa-star text-yellow-300 text-lg pulse-star"></i>
+                    <span id="score" class="font-bold text-lg">0</span>
+                </div>
+                <div class="h-5 w-px bg-emerald-500"></div>
+                <div class="flex items-center gap-1.5">
+                    <i class="fa-solid fa-trophy text-amber-300 text-lg"></i>
+                    <span id="level-indicator" class="font-bold text-sm">Stage 1/5</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-4xl mx-auto w-full p-4 flex-grow flex flex-col justify-center">
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-200 h-3 rounded-full mb-6 overflow-hidden shadow-inner">
+            <div id="progress-bar" class="bg-emerald-500 h-full w-[20%] transition-all duration-500 ease-out"></div>
+        </div>
+
+        <!-- Game Screen Card -->
+        <div class="bg-white rounded-3xl shadow-xl border-4 border-emerald-200 overflow-hidden flex flex-col min-h-[420px]">
+            
+            <!-- Question/Prompt Header -->
+            <div class="bg-emerald-50 p-6 border-b border-emerald-100">
+                <div class="flex justify-between items-center mb-2">
+                    <span id="badge-topic" class="bg-emerald-200 text-emerald-800 text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider">
+                        Stage 1: Past Inabilities
+                    </span>
+                    <button onclick="toggleRuleHelp()" class="text-xs text-emerald-700 font-bold hover:underline flex items-center gap-1">
+                        <i class="fa-solid fa-circle-info text-emerald-500"></i> Need Rule Help?
+                    </button>
+                </div>
+                <h2 id="question-text" class="text-lg md:text-xl font-bold text-slate-800 mt-1">
+                    Loading question...
+                </h2>
+            </div>
+
+            <!-- Quiz Options Area -->
+            <div class="p-6 flex-grow flex flex-col justify-center">
+                <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Dynamic option buttons go here -->
+                </div>
+
+                <!-- Explanation / Feedback Box -->
+                <div id="feedback-box" class="hidden mt-6 p-4 rounded-2xl transition-all duration-300">
+                    <div class="flex items-start gap-3">
+                        <span id="feedback-icon" class="text-2xl"></span>
+                        <div>
+                            <h4 id="feedback-title" class="font-bold text-base"></h4>
+                            <p id="feedback-text" class="text-sm mt-0.5 leading-relaxed"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Controls -->
+            <div class="bg-slate-50 p-4 border-t border-slate-100 flex justify-between items-center">
+                <div class="text-xs font-semibold text-slate-400 flex items-center gap-1">
+                    <i class="fa-solid fa-child"></i> Grade 6 • A1 English
+                </div>
+                <button id="next-btn" onclick="nextQuestion()" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-2.5 rounded-xl shadow-lg bounce-hover flex items-center gap-2">
+                    <span>Next Challenge</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Live Constructed Paragraph Preview -->
+        <div class="mt-6 bg-amber-50 rounded-2xl p-5 border-2 border-amber-200 shadow-sm">
+            <h3 class="font-bold text-amber-900 text-sm flex items-center gap-2 mb-2">
+                <i class="fa-solid fa-book-bookmark text-amber-600"></i> Your Unlocked Paragraph So Far:
+            </h3>
+            <p id="built-paragraph" class="text-slate-700 text-base leading-relaxed italic">
+                (Solve questions to unlock and build your paragraph!)
+            </p>
+        </div>
+
+    </main>
+
+    <!-- Modal: Topic Rule Guide -->
+    <div id="rule-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border-4 border-emerald-400">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-emerald-700 flex items-center gap-2">
+                    <i class="fa-solid fa-graduation-cap"></i> Quick Grammar Helper
+                </h3>
+                <button onclick="toggleRuleHelp()" class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+            </div>
+            
+            <div class="space-y-3 text-sm text-slate-700">
+                <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-200">
+                    <span class="font-bold text-emerald-800">1. Past Ability (Positive):</span>
+                    <p>Use <b>COULD + Base Verb (V1)</b></p>
+                    <p class="text-xs text-emerald-600 italic">Example: When I was 5, I <u>could run</u> fast.</p>
+                </div>
+                <div class="bg-rose-50 p-3 rounded-xl border border-rose-200">
+                    <span class="font-bold text-rose-800">2. Past Inability (Negative):</span>
+                    <p>Use <b>COULDN'T + Base Verb (V1)</b></p>
+                    <p class="text-xs text-rose-600 italic">Example: I <u>couldn't swim</u> in deep water.</p>
+                </div>
+                <div class="bg-amber-50 p-3 rounded-xl border border-amber-200">
+                    <span class="font-bold text-amber-800">3. Linking Words for Paragraphs:</span>
+                    <ul class="list-disc list-inside text-xs mt-1 space-y-1 text-amber-900">
+                        <li><b>BUT:</b> Connects opposites (<i>could ride bike, <u>but</u> couldn't drive</i>).</li>
+                        <li><b>BECAUSE:</b> Gives reasons (<i>couldn't read <u>because</u> I was 3</i>).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button onclick="toggleRuleHelp()" class="mt-5 w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl">Got It!</button>
+        </div>
+    </div>
+
+    <!-- Script Block -->
+    <script>
+        // Game Questions and Data for Topic 7
+        const quizData = [
+            {
+                topic: "Opening Sentence",
+                question: "Which sentence is the best starting sentence for your paragraph about past abilities?",
+                options: [
+                    "When I was five years old, my skills were very different.",
+                    "I am playing computer games every single day.",
+                    "My mother must cook dinner at six o'clock.",
+                    "I am five years old now."
+                ],
+                correct: 0,
+                explanation: "Paragraphs usually start with an introductory topic sentence that sets the time (When I was 5...)!",
+                unlockedSentence: "When I was five years old, my skills were very different from today."
+            },
+            {
+                topic: "Past Ability (Could)",
+                question: "Choose the correct missing word: 'When I was little, I ___ run very fast in the park.'",
+                options: ["could", "can", "am able", "must"],
+                correct: 0,
+                explanation: "'Could' is used to show ability in the PAST (when you were little).",
+                unlockedSentence: "Back then, I could run very fast in the park,"
+            },
+            {
+                topic: "Past Inability (Couldn't)",
+                question: "Complete the sentence: '...but I ___ ride a two-wheeled bicycle.'",
+                options: ["couldn't", "can't", "don't", "shouldn't"],
+                correct: 0,
+                explanation: "Use 'couldn't' (could not) to talk about things you were NOT able to do in the past.",
+                unlockedSentence: "but I couldn't ride a two-wheeled bicycle."
+            },
+            {
+                topic: "Linking Words (Because)",
+                question: "Choose the best connector: 'I couldn't read thick books ___ I didn't know many words.'",
+                options: ["because", "but", "so that", "or"],
+                correct: 0,
+                explanation: "We use 'because' to give a reason why we couldn't do something!",
+                unlockedSentence: "I couldn't read thick books because I didn't know many hard words."
+            },
+            {
+                topic: "Verb Forms after Could",
+                question: "Which verb form comes directly after 'could' or 'couldn't'?",
+                options: [
+                    "Base Verb / V1 (speak)",
+                    "Past Form / V2 (spoke)",
+                    "Verb + ing (speaking)",
+                    "Verb + s (speaks)"
+                ],
+                correct: 0,
+                explanation: "Always use the base verb (V1) after could/couldn't! (e.g., could speak, couldn't swim).",
+                unlockedSentence: "However, I could speak simple English words with my teacher."
+            },
+            {
+                topic: "Transitioning to Now",
+                question: "Which sentence correctly connects past inability to present ability?",
+                options: [
+                    "In the past I couldn't tie my shoes, but now I can do it easily.",
+                    "In the past I can swim, but now I couldn't.",
+                    "Now I couldn't ride a bike very fast.",
+                    "Yesterday I can fly a kite."
+                ],
+                correct: 0,
+                explanation: "Use 'couldn't' for past abilities and switch to 'can' for things you do NOW!",
+                unlockedSentence: "In the past I couldn't tie my shoes by myself, but now I can do it easily."
+            },
+            {
+                topic: "Concluding Sentence",
+                question: "What is the best final sentence to close your paragraph?",
+                options: [
+                    "I am proud of how much I have grown and learned!",
+                    "Tomorrow I must buy some fresh milk.",
+                    "I couldn't eat apples last year.",
+                    "My dog can jump very high."
+                ],
+                correct: 0,
+                explanation: "A strong conclusion wraps up your thoughts by reflecting on how much you have grown!",
+                unlockedSentence: "I am really proud of how much I have grown and learned since I was little!"
+            }
+        ];
+
+        let currentStep = 0;
+        let score = 0;
+        let paragraphSentences = [];
+
+        // DOM Elements
+        const questionTextEl = document.getElementById('question-text');
+        const optionsContainerEl = document.getElementById('options-container');
+        const badgeTopicEl = document.getElementById('badge-topic');
+        const feedbackBoxEl = document.getElementById('feedback-box');
+        const feedbackIconEl = document.getElementById('feedback-icon');
+        const feedbackTitleEl = document.getElementById('feedback-title');
+        const feedbackTextEl = document.getElementById('feedback-text');
+        const nextBtnEl = document.getElementById('next-btn');
+        const scoreEl = document.getElementById('score');
+        const levelIndicatorEl = document.getElementById('level-indicator');
+        const progressBarEl = document.getElementById('progress-bar');
+        const builtParagraphEl = document.getElementById('built-paragraph');
+
+        // Load Initial Question
+        function loadQuestion() {
+            const currentQ = quizData[currentStep];
+            
+            // Reset UI
+            feedbackBoxEl.classList.add('hidden');
+            nextBtnEl.classList.add('hidden');
+            optionsContainerEl.innerHTML = '';
+
+            // Update Info
+            questionTextEl.textContent = currentQ.question;
+            badgeTopicEl.textContent = `Question ${currentStep + 1} of ${quizData.length}: ${currentQ.topic}`;
+            levelIndicatorEl.textContent = `Stage ${currentStep + 1}/${quizData.length}`;
+            progressBarEl.style.width = `${((currentStep) / quizData.length) * 100}%`;
+
+            // Create Option Buttons
+            currentQ.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-2xl border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 font-semibold text-slate-700 transition-all bounce-hover flex items-center justify-between";
+                btn.innerHTML = `<span>${opt}</span> <i class="fa-regular fa-circle text-slate-300 text-lg"></i>`;
+                btn.onclick = () => selectOption(index, btn);
+                optionsContainerEl.appendChild(btn);
+            });
+        }
+
+        // Handle Option Selection
+        function selectOption(selectedIndex, btnElement) {
+            const currentQ = quizData[currentStep];
+            const isCorrect = selectedIndex === currentQ.correct;
+
+            // Disable all option buttons
+            const allBtns = optionsContainerEl.querySelectorAll('button');
+            allBtns.forEach(b => b.disabled = true);
+
+            if (isCorrect) {
+                // Correct styling
+                btnElement.className = "w-full text-left p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-100 font-bold text-emerald-900 flex items-center justify-between shadow-md";
+                btnElement.querySelector('i').className = "fa-solid fa-circle-check text-emerald-600 text-xl";
+
+                // Show Feedback
+                feedbackBoxEl.className = "mt-6 p-4 rounded-2xl bg-emerald-100 border border-emerald-300 text-emerald-900 flex items-start gap-3";
+                feedbackIconEl.innerHTML = `<i class="fa-solid fa-trophy text-amber-500"></i>`;
+                feedbackTitleEl.textContent = "Awesome Job! (+10 pts)";
+                feedbackTextEl.textContent = currentQ.explanation;
+
+                // Update Score & Unlocked Paragraph
+                score += 10;
+                scoreEl.textContent = score;
+                paragraphSentences.push(currentQ.unlockedSentence);
+                updateParagraphPreview();
+            } else {
+                // Incorrect styling
+                btnElement.className = "w-full text-left p-4 rounded-2xl border-2 border-rose-400 bg-rose-100 font-bold text-rose-900 flex items-center justify-between shadow-md";
+                btnElement.querySelector('i').className = "fa-solid fa-circle-xmark text-rose-600 text-xl";
+
+                // Highlight correct answer
+                allBtns[currentQ.correct].className = "w-full text-left p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50 font-bold text-emerald-800 flex items-center justify-between";
+
+                // Show Feedback
+                feedbackBoxEl.className = "mt-6 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-900 flex items-start gap-3";
+                feedbackIconEl.innerHTML = `<i class="fa-solid fa-lightbulb text-amber-500"></i>`;
+                feedbackTitleEl.textContent = "Not quite! Let's learn:";
+                feedbackTextEl.textContent = currentQ.explanation;
+
+                // Still add sentence to paragraph to preserve flow
+                paragraphSentences.push(currentQ.unlockedSentence);
+                updateParagraphPreview();
+            }
+
+            feedbackBoxEl.classList.remove('hidden');
+            nextBtnEl.classList.remove('hidden');
+        }
+
+        // Update Paragraph Preview Text
+        function updateParagraphPreview() {
+            builtParagraphEl.textContent = paragraphSentences.join(" ");
+            builtParagraphEl.classList.remove('italic');
+        }
+
+        // Next Question or Finish Game
+        function nextQuestion() {
+            currentStep++;
+            if (currentStep < quizData.length) {
+                loadQuestion();
+            } else {
+                finishGame();
+            }
+        }
+
+        // Finish Game Screen
+        function finishGame() {
+            progressBarEl.style.width = `100%`;
+            badgeTopicEl.textContent = "Paragraph Master!";
+            questionTextEl.textContent = "🎉 Congratulations! You built your Past Ability Paragraph!";
+            
+            optionsContainerEl.innerHTML = `
+                <div class="col-span-full text-center py-6 bg-emerald-50 rounded-2xl border-2 border-emerald-200">
+                    <i class="fa-solid fa-award text-6xl text-amber-400 mb-3"></i>
+                    <h3 class="text-2xl font-bold text-emerald-900">Final Score: ${score} / ${quizData.length * 10}</h3>
+                    <p class="text-slate-600 text-sm mt-1 max-w-md mx-auto">
+                        You have successfully practiced <b>could</b>, <b>couldn't</b>, base verbs, and linking words to write a full English paragraph!
+                    </p>
+                    <button onclick="location.reload()" class="mt-5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-xl shadow-lg bounce-hover inline-flex items-center gap-2">
+                        <i class="fa-solid fa-rotate-right"></i> Play Again
+                    </button>
+                </div>
+            `;
+
+            feedbackBoxEl.classList.add('hidden');
+            nextBtnEl.classList.add('hidden');
+        }
+
+        // Toggle Rule Helper Modal
+        function toggleRuleHelp() {
+            const modal = document.getElementById('rule-modal');
+            modal.classList.toggle('hidden');
+        }
+
+        // Start Game on Load
+        window.onload = loadQuestion;
+    </script>
+</body>
+</html>

@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Citizen Hero Academy - Mission 1 (6th Grade)</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Fredoka for kid-friendly headings, Nunito for clear reading -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+      user-select: none;
+    }
+    h1, h2, h3, .hero-font {
+      font-family: 'Fredoka', sans-serif;
+    }
+    /* Custom Animations */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    .animate-float {
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.85); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .pop-in {
+      animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+    .shake {
+      animation: shake 0.45s ease-in-out;
+    }
+    /* Game Button 3D Push Effect */
+    .btn-3d {
+      transition: all 0.15s ease;
+      box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25);
+    }
+    .btn-3d:active:not(:disabled) {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+    }
+    .option-btn {
+      transition: all 0.2s ease;
+      box-shadow: 0 5px 0 #cbd5e1;
+    }
+    .option-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 0 #94a3b8;
+    }
+    .option-btn:active:not(:disabled) {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #94a3b8;
+    }
+    /* Custom Scrollbar for Study Modal */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #6366f1;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body class="text-slate-800 flex flex-col items-center justify-center p-3 sm:p-6">
+
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+  <!-- Top Navigation / Status Header -->
+  <header class="w-full max-w-4xl bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-3 sm:p-4 mb-4 text-white shadow-xl flex flex-wrap items-center justify-between gap-3">
+    <!-- Logo & Title -->
+    <div class="flex items-center gap-3">
+      <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-2xl shadow-lg border-2 border-white">
+        🦸‍♂️
+      </div>
+      <div>
+        <h1 class="text-lg sm:text-xl font-bold tracking-wide text-amber-300 leading-tight">CITIZEN HERO ACADEMY</h1>
+        <p class="text-xs sm:text-sm text-indigo-200 font-semibold">Topic 1: Rights, Rules & Word Power (-ful, im-, un-, dis-)</p>
+      </div>
+    </div>
+
+    <!-- Action Controls: Study Cards & Audio Toggle -->
+    <div class="flex items-center gap-2 sm:gap-3 ml-auto">
+      <button onclick="toggleStudyModal(true)" class="btn-3d bg-sky-500 hover:bg-sky-400 text-white font-bold px-3 py-2 sm:px-4 sm:py-2 rounded-2xl text-xs sm:text-sm flex items-center gap-1.5 border-2 border-sky-200">
+        <span>📖</span> <span>Hero Word Guide</span>
+      </button>
+      <button id="sound-btn" onclick="toggleSound()" class="btn-3d bg-indigo-600 hover:bg-indigo-500 text-white font-bold p-2 sm:px-3 sm:py-2 rounded-2xl text-sm flex items-center gap-1 border-2 border-indigo-300" title="Toggle Sound">
+        <span id="sound-icon">🔊</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Game Container -->
+  <main class="w-full max-w-4xl bg-white rounded-3xl shadow-2xl border-4 border-indigo-300 overflow-hidden relative">
+
+    <!-- ================= SCREEN 1: WELCOME / START SCREEN ================= -->
+    <section id="start-screen" class="p-6 sm:p-10 text-center flex flex-col items-center">
+      <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-5xl sm:text-6xl shadow-xl mb-5 animate-float border-4 border-amber-300">
+        🛡️
+      </div>
+      <span class="bg-indigo-100 text-indigo-700 font-extrabold px-4 py-1 rounded-full text-xs sm:text-sm uppercase tracking-wider mb-2">
+        6th Grade • Citizen Hero Academy: Mission 1
+      </span>
+      <h2 class="text-2xl sm:text-4xl font-bold text-slate-800 mb-3">Welcome to Citizen Hero Training!</h2>
+      <p class="text-slate-600 max-w-xl text-sm sm:text-base mb-6 leading-relaxed">
+        Can you follow the rules, protect human rights, and master secret word powers like <b class="text-emerald-600">-ful</b>, <b class="text-rose-600">im-</b>, <b class="text-rose-600">un-</b>, and <b class="text-rose-600">dis-</b>? Complete 16 missions to earn your <b>Super Citizen</b> badge!
+      </p>
+
+      <!-- Rank Progression Preview -->
+      <div class="w-full max-w-2xl bg-slate-50 border-2 border-slate-200 rounded-2xl p-4 mb-7">
+        <p class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-3">🏆 Hero Ranks to Unlock</p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-bold">
+          <div class="bg-white p-2.5 rounded-xl border border-slate-200 flex flex-col items-center">
+            <span class="text-2xl mb-1">🌱</span>
+            <span class="text-slate-700">Rookie</span>
+            <span class="text-[11px] text-slate-400">0 - 40 XP</span>
+          </div>
+          <div class="bg-white p-2.5 rounded-xl border border-slate-200 flex flex-col items-center">
+            <span class="text-2xl mb-1">🛡️</span>
+            <span class="text-sky-700">Citizen Cadet</span>
+            <span class="text-[11px] text-slate-400">50 - 90 XP</span>
+          </div>
+          <div class="bg-white p-2.5 rounded-xl border border-slate-200 flex flex-col items-center">
+            <span class="text-2xl mb-1">🌟</span>
+            <span class="text-purple-700">Community Guardian</span>
+            <span class="text-[11px] text-slate-400">100 - 130 XP</span>
+          </div>
+          <div class="bg-gradient-to-b from-amber-50 to-orange-50 p-2.5 rounded-xl border-2 border-amber-300 flex flex-col items-center">
+            <span class="text-2xl mb-1">👑</span>
+            <span class="text-amber-700">Super Citizen</span>
+            <span class="text-[11px] text-amber-600">140+ XP</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Start & Study Buttons -->
+      <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center">
+        <button onclick="toggleStudyModal(true)" class="btn-3d bg-sky-500 hover:bg-sky-400 text-white font-bold px-6 py-4 rounded-2xl text-base sm:text-lg flex items-center justify-center gap-2">
+          <span>📖</span> <span>Open Hero Word Guide</span>
+        </button>
+        <button onclick="startGame()" class="btn-3d bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white font-bold px-8 py-4 rounded-2xl text-base sm:text-lg flex items-center justify-center gap-2">
+          <span>🚀</span> <span>Start Mission (16 Questions)</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ================= SCREEN 2: QUIZ PLAY SCREEN ================= -->
+    <section id="quiz-screen" class="hidden">
+      <!-- HUD Bar (Score, Streak, Rank, Progress) -->
+      <div class="bg-slate-100 border-b-2 border-slate-200 p-4 sm:px-6">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <!-- Question Counter & Category Tag -->
+          <div class="flex items-center gap-2">
+            <span id="q-counter" class="bg-indigo-600 text-white font-extrabold px-3 py-1 rounded-xl text-xs sm:text-sm">
+              Mission 1 / 16
+            </span>
+            <span id="q-category" class="bg-purple-100 text-purple-800 font-bold px-3 py-1 rounded-xl text-xs sm:text-sm">
+              Rules & Laws
+            </span>
+          </div>
+
+          <!-- Stats: Rank, Streak, XP -->
+          <div class="flex items-center gap-2 sm:gap-3">
+            <div class="bg-white border-2 border-amber-300 px-3 py-1 rounded-xl flex items-center gap-1.5 shadow-sm">
+              <span id="rank-icon" class="text-base">🌱</span>
+              <span id="rank-title" class="text-xs font-extrabold text-slate-700 hidden sm:inline">Rookie</span>
+            </div>
+            <div class="bg-white border-2 border-orange-300 px-3 py-1 rounded-xl flex items-center gap-1 shadow-sm" title="Answer Streak">
+              <span>🔥</span>
+              <span id="streak-count" class="text-xs sm:text-sm font-extrabold text-orange-600">0</span>
+            </div>
+            <div class="bg-white border-2 border-emerald-400 px-3 py-1 rounded-xl flex items-center gap-1 shadow-sm">
+              <span>⭐</span>
+              <span id="xp-count" class="text-xs sm:text-sm font-extrabold text-emerald-700">0 XP</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-200 h-3 rounded-full overflow-hidden">
+          <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-500 h-full rounded-full transition-all duration-500" style="width: 6%"></div>
+        </div>
+      </div>
+
+      <!-- Question Content Area -->
+      <div class="p-5 sm:p-8">
+        <!-- Visual Scenario Card -->
+        <div id="question-box" class="bg-indigo-50/70 border-2 border-indigo-100 rounded-3xl p-5 sm:p-6 mb-6 text-center sm:text-left flex flex-col sm:flex-row items-center gap-4">
+          <div id="q-emoji" class="w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-2xl bg-white shadow-md border-2 border-indigo-200 flex items-center justify-center text-4xl sm:text-5xl">
+            🚦
+          </div>
+          <div class="flex-1">
+            <p id="q-context" class="text-xs sm:text-sm font-bold text-indigo-600 uppercase tracking-wider mb-1">
+              Scenario
+            </p>
+            <h3 id="q-text" class="text-lg sm:text-2xl font-bold text-slate-800 leading-snug">
+              Loading question...
+            </h3>
+          </div>
+        </div>
+
+        <!-- Answer Options Grid -->
+        <div id="options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-6">
+          <!-- Dynamically generated option buttons -->
+        </div>
+
+        <!-- Immediate Feedback & Explanation Box (Hidden until user answers) -->
+        <div id="feedback-box" class="hidden rounded-3xl p-5 border-2 mb-2 pop-in">
+          <div class="flex items-start gap-3.5">
+            <div id="feedback-icon" class="text-3xl sm:text-4xl shrink-0 mt-0.5">💡</div>
+            <div class="flex-1">
+              <h4 id="feedback-title" class="text-base sm:text-lg font-extrabold mb-1">
+                Explanation Title
+              </h4>
+              <p id="feedback-explanation" class="text-sm sm:text-base text-slate-700 leading-relaxed mb-3">
+                Explanation details go here...
+              </p>
+              <div id="feedback-rule-pill" class="inline-block bg-white/90 border border-slate-300 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-extrabold text-indigo-900 shadow-sm">
+                📌 Key Rule
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 flex justify-end">
+            <button id="next-btn" onclick="nextQuestion()" class="btn-3d bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-3 rounded-2xl text-sm sm:text-base flex items-center gap-2">
+              <span id="next-btn-text">Got it! Next Mission</span> <span>➡️</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SCREEN 3: RESULTS & MISTAKE REVIEW SCREEN ================= -->
+    <section id="result-screen" class="hidden p-6 sm:p-10 text-center">
+      <div id="final-badge-icon" class="w-24 h-24 sm:w-28 sm:h-28 mx-auto rounded-full bg-gradient-to-tr from-amber-400 to-orange-500 flex items-center justify-center text-5xl sm:text-6xl shadow-xl mb-4 border-4 border-white animate-float">
+        👑
+      </div>
+      <p class="text-xs font-extrabold uppercase tracking-widest text-indigo-600 mb-1">Mission Complete!</p>
+      <h2 id="final-rank-title" class="text-2xl sm:text-4xl font-bold text-slate-800 mb-2">Super Citizen Legend!</h2>
+      <p id="final-message" class="text-slate-600 max-w-lg mx-auto text-sm sm:text-base mb-6">
+        You did an amazing job protecting the community and mastering prefixes and suffixes!
+      </p>
+
+      <!-- Score Summary Cards -->
+      <div class="grid grid-cols-3 gap-3 max-w-lg mx-auto mb-8">
+        <div class="bg-emerald-50 border-2 border-emerald-200 p-3 sm:p-4 rounded-2xl">
+          <p class="text-xs font-bold text-emerald-700 uppercase">Correct</p>
+          <p id="final-correct" class="text-2xl sm:text-3xl font-extrabold text-emerald-600">15 / 15</p>
+        </div>
+        <div class="bg-amber-50 border-2 border-amber-200 p-3 sm:p-4 rounded-2xl">
+          <p class="text-xs font-bold text-amber-700 uppercase">Total XP</p>
+          <p id="final-xp" class="text-2xl sm:text-3xl font-extrabold text-amber-600">150</p>
+        </div>
+        <div class="bg-orange-50 border-2 border-orange-200 p-3 sm:p-4 rounded-2xl">
+          <p class="text-xs font-bold text-orange-700 uppercase">Best Streak</p>
+          <p id="final-streak" class="text-2xl sm:text-3xl font-extrabold text-orange-600">🔥 15</p>
+        </div>
+      </div>
+
+      <!-- Mistakes Review Section (Shown if student made any mistakes) -->
+      <div id="mistakes-Wrapper" class="hidden text-left max-w-2xl mx-auto mb-8">
+        <h3 class="text-lg font-bold text-rose-600 mb-3 flex items-center gap-2">
+          <span>🛠️</span> <span>Review Your Mistakes (Learn & Grow!)</span>
+        </h3>
+        <div id="mistakes-list" class="space-y-3 max-h-80 overflow-y-auto pr-2">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button onclick="toggleStudyModal(true)" class="btn-3d bg-sky-500 hover:bg-sky-400 text-white font-bold px-6 py-3.5 rounded-2xl text-base flex items-center justify-center gap-2">
+          <span>📖</span> <span>Open Hero Word Guide</span>
+        </button>
+        <button onclick="startGame()" class="btn-3d bg-emerald-500 hover:bg-emerald-400 text-white font-bold px-8 py-3.5 rounded-2xl text-base flex items-center justify-center gap-2">
+          <span>🔄</span> <span>Play Again</span>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= MODAL: HERO WORD GUIDE ================= -->
+  <div id="study-modal" class="fixed inset-0 bg-slate-900/75 backdrop-blur-sm z-40 hidden flex items-center justify-center p-3 sm:p-6">
+    <div class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl border-4 border-sky-400 overflow-hidden flex flex-col max-h-[90vh] pop-in">
+      <!-- Modal Header -->
+      <div class="bg-gradient-to-r from-sky-500 to-indigo-600 p-4 sm:px-6 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <span class="text-2xl">📖</span>
+          <div>
+            <h3 class="text-lg sm:text-xl font-bold leading-none">Hero Word Guide</h3>
+            <p class="text-xs text-sky-100 mt-0.5">Quick Review before or during your mission!</p>
+          </div>
+        </div>
+        <button onclick="toggleStudyModal(false)" class="bg-white/20 hover:bg-white/30 text-white font-bold w-9 h-9 rounded-full flex items-center justify-center text-lg">
+          ✕
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-5 text-sm sm:text-base">
+
+        <!-- Card 1: Rules, Laws & Good Citizen -->
+        <div class="bg-indigo-50 border-2 border-indigo-200 rounded-2xl p-4">
+          <h4 class="font-bold text-indigo-800 text-base sm:text-lg mb-2 flex items-center gap-2">
+            <span>🚦</span> <span>1. Rules, Laws & Community</span>
+          </h4>
+          <ul class="space-y-1.5 text-slate-700 text-xs sm:text-sm">
+            <li>• <b>Rule</b> <i>(Kural)</i>: Instructions at school or home. <i>(Example: Listen to your teacher.)</i></li>
+            <li>• <b>Law</b> <i>(Yasa / Kanun)</i>: Official rules for the whole country. <i>(Example: Stop at a red traffic light.)</i></li>
+            <li>• <b>Obey / Follow the rules</b> <i>(Kurallara uymak)</i>: Doing what the rules say. ✅</li>
+            <li>• <b>Break the rules</b> <i>(Kuralları çiğnemek)</i>: NOT following the rules. ❌</li>
+            <li>• <b>Community</b> <i>(Toplum / Çevre)</i>: All the people living in one place together.</li>
+            <li>• <b>Good citizen</b> <i>(İyi vatandaş)</i>: A person who helps the community and obeys laws.</li>
+          </ul>
+        </div>
+
+        <!-- Card 2: Rights & Responsibilities -->
+        <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-4">
+          <h4 class="font-bold text-amber-900 text-base sm:text-lg mb-2 flex items-center gap-2">
+            <span>⚖️</span> <span>2. Rights vs. Responsibilities</span>
+          </h4>
+          <ul class="space-y-1.5 text-slate-700 text-xs sm:text-sm">
+            <li>• <b>Right</b> <i>(Hak)</i>: Something every person deserves to have!
+              <br><span class="text-amber-800 font-bold">→ Human right, Children's right, Student's right</span> <i>(Going to school, playing safely, having clean water).</i>
+            </li>
+            <li>• <b>Responsibility</b> <i>(Sorumluluk / Görev)</i>: Your duty; something you MUST do.
+              <br><span class="text-amber-800 font-bold">→ Responsible for</span> <i>(-den sorumlu)</i>: "I am <b>responsible for</b> doing my homework and feeding my cat."
+            </li>
+          </ul>
+        </div>
+
+        <!-- Card 3: Polite vs. Rude & Respect -->
+        <div class="bg-emerald-50 border-2 border-emerald-200 rounded-2xl p-4">
+          <h4 class="font-bold text-emerald-900 text-base sm:text-lg mb-2 flex items-center gap-2">
+            <span>🤝</span> <span>3. Respect & Politeness</span>
+          </h4>
+          <ul class="space-y-1.5 text-slate-700 text-xs sm:text-sm">
+            <li>• <b>Polite</b> <i>(Kibar / Nazik)</i> ✅: Saying "Please", "Thank you", and "Excuse me".</li>
+            <li>• <b>Impolite = Rude</b> <i>(Kaba)</i> ❌: Shouting at people, pushing in line, not saying thank you.</li>
+            <li>• <b>Respect</b> <i>(Saygı / Saygı duymak)</i>: Being kind and listening to others.</li>
+          </ul>
+        </div>
+
+        <!-- Card 4: Word Power! Suffix -FUL & Negative Prefixes -->
+        <div class="bg-rose-50 border-2 border-rose-200 rounded-2xl p-4">
+          <h4 class="font-bold text-rose-900 text-base sm:text-lg mb-2 flex items-center gap-2">
+            <span>⚡</span> <span>4. Word Power: Suffix (-ful) & Negative Prefixes (im-, un-, dis-)</span>
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2 text-xs sm:text-sm">
+            <div class="bg-white p-3 rounded-xl border border-emerald-300">
+              <p class="font-extrabold text-emerald-700 mb-1">➕ Suffix "-ful" = FULL OF (Positive!)</p>
+              <p class="text-slate-600 mb-1">Added to the <b>END</b> of a word:</p>
+              <ul class="text-slate-700 space-y-1 font-semibold">
+                <li>• Respect + <b>ful</b> = <b>Respectful</b> (Full of respect)</li>
+                <li>• Help + <b>ful</b> = <b>Helpful</b> (Full of help)</li>
+                <li>• Care + <b>ful</b> = <b>Careful</b> (Full of care)</li>
+              </ul>
+            </div>
+            <div class="bg-white p-3 rounded-xl border border-rose-300">
+              <p class="font-extrabold text-rose-700 mb-1">➖ Prefixes "im- / un- / dis-" = NOT (Negative!)</p>
+              <p class="text-slate-600 mb-1">Added to the <b>START</b> of a word:</p>
+              <ul class="text-slate-700 space-y-1 font-semibold">
+                <li>• <b>im</b> + polite = <b>Impolite</b> (NOT polite / rude)</li>
+                <li>• <b>dis</b> + obey = <b>Disobey</b> (NOT obey)</li>
+                <li>• <b>dis</b> + respectful = <b>Disrespectful</b> (NOT respectful)</li>
+                <li>• <b>un</b> + fair / kind = <b>Unfair / Unkind</b></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="bg-slate-100 p-4 border-t border-slate-200 flex justify-end">
+        <button onclick="toggleStudyModal(false)" class="btn-3d bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-2.5 rounded-2xl text-sm sm:text-base">
+          Got It! Back to Game 👍
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    // ---------------------------------------------------------
+    // 1. QUESTION BANK (16 Gamified Questions for 6th Grade)
+    // ---------------------------------------------------------
+    const questions = [
+      {
+        id: 1,
+        category: "Rules & Laws",
+        emoji: "🏫",
+        context: "School Life",
+        question: "\"Raise your hand before you speak in class.\" What is this?",
+        options: [
+          "A classroom rule",
+          "Break the rules",
+          "An impolite person",
+          "Disobey"
+        ],
+        correct: 0,
+        explanation: "A 'rule' (kural) tells us what we should do at school or home to keep order.",
+        rulePill: "📌 Rule = Instruction at school or home"
+      },
+      {
+        id: 2,
+        category: "Rules & Laws",
+        emoji: "🚦",
+        context: "City Traffic",
+        question: "Cars MUST stop at the red traffic light. Everybody in the country must obey this. It is a ______.",
+        options: [
+          "law",
+          "rude",
+          "unfair",
+          "hobby"
+        ],
+        correct: 0,
+        explanation: "A 'law' (kanun / yasa) is a big, official rule for everyone in the country. Police make sure people obey laws.",
+        rulePill: "📌 Law = Official country rule"
+      },
+      {
+        id: 3,
+        category: "Follow vs. Break Rules",
+        emoji: "🚯",
+        context: "In the Park",
+        question: "The park sign says: 'DO NOT THROW RUBBISH!' — Look! Tom throws his plastic bottle on the grass. Tom ______.",
+        options: [
+          "breaks the rules",
+          "follows the rules",
+          "is a good citizen",
+          "is very polite"
+        ],
+        correct: 0,
+        explanation: "When you do NOT obey a rule, you 'break the rules' (kuralları çiğnemek). Throwing rubbish on the ground is breaking the rules!",
+        rulePill: "📌 Break the rules = NOT obeying rules ❌"
+      },
+      {
+        id: 4,
+        category: "Follow vs. Break Rules",
+        emoji: "📚",
+        context: "Library Rules",
+        question: "Zeynep is quiet in the library and returns her books on time. She always ______.",
+        options: [
+          "follows the rules",
+          "breaks the rules",
+          "disobeys the teacher",
+          "is disrespectful"
+        ],
+        correct: 0,
+        explanation: "'Follow the rules' or 'obey the rules' (kurallara uymak) means doing the right thing according to the rules.",
+        rulePill: "📌 Follow / Obey the rules = Doing what rules say ✅"
+      },
+      {
+        id: 5,
+        category: "Citizenship & Community",
+        emoji: "🏘️",
+        context: "Living Together",
+        question: "All the people who live together in the same neighborhood, town, or city are called a ______.",
+        options: [
+          "community",
+          "responsibility",
+          "prefix",
+          "mistake"
+        ],
+        correct: 0,
+        explanation: "A 'community' (toplum / mahalle / çevre) is a group of people living in the same place.",
+        rulePill: "📌 Community = People living together in one area"
+      },
+      {
+        id: 6,
+        category: "Citizenship & Community",
+        emoji: "🦸‍♀️",
+        context: "Hero Behavior",
+        question: "Ali helps old people cross the street, keeps the park clean, and obeys the laws. Ali is a ______.",
+        options: [
+          "good citizen",
+          "rude citizen",
+          "rule breaker",
+          "disrespectful boy"
+        ],
+        correct: 0,
+        explanation: "A 'good citizen' (iyi vatandaş) respects others, helps the community, and follows the rules and laws.",
+        rulePill: "📌 Good Citizen = Helps community + Obeys laws"
+      },
+      {
+        id: 7,
+        category: "Polite vs. Rude",
+        emoji: "🗣️",
+        context: "Good Manners",
+        question: "Mert always says 'Please' and 'Thank you' to the canteen worker. Mert is very ______.",
+        options: [
+          "polite",
+          "rude",
+          "impolite",
+          "unfair"
+        ],
+        correct: 0,
+        explanation: "'Polite' (kibar / nazik) people have good manners and use kind words like 'Please' and 'Thank you'.",
+        rulePill: "📌 Polite = Kind & good manners ✅"
+      },
+      {
+        id: 8,
+        category: "Polite vs. Rude",
+        emoji: "😠",
+        context: "Bad Manners",
+        question: "Leo pushes other students in the lunch line and shouts at them. Leo is ______.",
+        options: [
+          "rude (impolite)",
+          "polite",
+          "respectful",
+          "helpful"
+        ],
+        correct: 0,
+        explanation: "'Rude' and 'impolite' (kaba) mean the same thing: NOT polite, having bad manners.",
+        rulePill: "📌 Rude = Impolite (NOT polite) ❌"
+      },
+      {
+        id: 9,
+        category: "Suffix: -ful",
+        emoji: "✨",
+        context: "Word Power: Suffixes",
+        question: "What does the suffix '-ful' (like in respectFUL, helpFUL, careFUL) add to a word?",
+        options: [
+          "A positive meaning ('full of')",
+          "A negative meaning ('not')",
+          "A past tense meaning ('yesterday')",
+          "A plural meaning ('many')"
+        ],
+        correct: 0,
+        explanation: "The suffix '-ful' means 'FULL OF' and gives a positive meaning! Respectful = full of respect; Helpful = full of help.",
+        rulePill: "📌 -ful = Full of (Positive meaning ➕)"
+      },
+      {
+        id: 10,
+        category: "Suffix: -ful",
+        emoji: "👵",
+        context: "Word Builder",
+        question: "Elif listens carefully to her grandparents and speaks kindly to them. She is full of respect. She is ______.",
+        options: [
+          "respectful",
+          "disrespectful",
+          "rude",
+          "impolite"
+        ],
+        correct: 0,
+        explanation: "Respect + ful = Respectful (saygılı / full of respect). It is a positive word!",
+        rulePill: "📌 Respect + ful = Respectful (Full of respect)"
+      },
+      {
+        id: 11,
+        category: "Negative Prefixes (im-, un-, dis-)",
+        emoji: "🚫",
+        context: "Word Power: Prefixes",
+        question: "We put 'im-', 'un-', or 'dis-' at the START of a word to make it negative (NOT). Which pair is CORRECT?",
+        options: [
+          "polite ➔ impolite",
+          "polite ➔ dispolite",
+          "obey ➔ imobey",
+          "kind ➔ inkkind"
+        ],
+        correct: 0,
+        explanation: "We say 'impolite' (NOT polite), 'disobey' (NOT obey), and 'unkind' (NOT kind). Words starting with 'p' often take 'im-'!",
+        rulePill: "📌 im + polite = impolite | dis + obey = disobey | un + kind = unkind"
+      },
+      {
+        id: 12,
+        category: "Negative Prefixes (im-, un-, dis-)",
+        emoji: "🎧",
+        context: "Opposite Meaning",
+        question: "The teacher is speaking, but Sam is talking loudly and laughing at his friend. Sam is NOT respectful. He is ______.",
+        options: [
+          "disrespectful",
+          "respectful",
+          "helpful",
+          "careful"
+        ],
+        correct: 0,
+        explanation: "Adding the negative prefix 'dis-' to 'respectful' makes 'disrespectful' (saygısız / NOT respectful).",
+        rulePill: "📌 dis + respectful = Disrespectful (NOT respectful)"
+      },
+      {
+        id: 13,
+        category: "Negative Prefixes (im-, un-, dis-)",
+        emoji: "⚖️",
+        context: "Fair Play",
+        question: "In a game, one team gets 10 minutes to play, and the other team gets only 1 minute! That is NOT fair. It is ______!",
+        options: [
+          "unfair",
+          "imfair",
+          "fairful",
+          "polite"
+        ],
+        correct: 0,
+        explanation: "To make 'fair' (adil) negative, we add 'un-' at the beginning: un + fair = unfair (adil olmayan / haksız).",
+        rulePill: "📌 un + fair = Unfair (NOT fair)"
+      },
+      {
+        id: 14,
+        category: "Negative Prefixes (im-, un-, dis-)",
+        emoji: "💔",
+        context: "Playground Behavior",
+        question: "Bora laughs when his friend falls down and never shares his toys. He is NOT kind. He is ______.",
+        options: [
+          "unkind",
+          "imkind",
+          "diskind",
+          "helpful"
+        ],
+        correct: 0,
+        explanation: "To make 'kind' (kibar / iyi kalpli) negative, we add 'un-' at the start: un + kind = unkind (kırıcı / kibar olmayan).",
+        rulePill: "📌 un + kind = Unkind (NOT kind)"
+      },
+      {
+        id: 15,
+        category: "Rights (Human / Children's / Student's)",
+        emoji: "🌍",
+        context: "Every Child Matters",
+        question: "Every child in the world deserves to go to school, be safe, have clean water, and play. This is a ______.",
+        options: [
+          "children's right (human right)",
+          "broken rule",
+          "bad habit",
+          "disrespectful action"
+        ],
+        correct: 0,
+        explanation: "A 'right' (hak) is something every human, child, or student deserves to have for a safe and happy life.",
+        rulePill: "📌 Right = What every person deserves (Human / Children's / Student's right)"
+      },
+      {
+        id: 16,
+        category: "Responsibility & Responsible for",
+        emoji: "🐱",
+        context: "My Daily Duty",
+        question: "Doing my homework is my ______, and I am ______ feeding my pet cat every morning.",
+        options: [
+          "responsibility / responsible for",
+          "right / rude to",
+          "law / impolite to",
+          "community / unfair to"
+        ],
+        correct: 0,
+        explanation: "A 'responsibility' (sorumluluk) is your duty. And we always use the preposition 'for' with responsible: 'responsible FOR doing something' (-den sorumlu).",
+        rulePill: "📌 My responsibility (noun) | I am responsible FOR + verb-ing / noun"
+      }
+    ];
+
+    // ---------------------------------------------------------
+    // 2. GAME STATE & SOUND SYNTHESIZER (Web Audio API)
+    // ---------------------------------------------------------
+    let currentQuestionIndex = 0;
+    let xp = 0;
+    let streak = 0;
+    let bestStreak = 0;
+    let correctCount = 0;
+    let mistakes = [];
+    let soundEnabled = true;
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) audioCtx = new AudioContext();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playSound(type) {
+      if (!soundEnabled) return;
+      try {
+        initAudio();
+        if (!audioCtx) return;
+
+        const now = audioCtx.currentTime;
+        if (type === 'correct') {
+          // Happy ascending chime
+          const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+          notes.forEach((freq, idx) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.07);
+            gain.gain.setValueAtTime(0.18, now + idx * 0.07);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.25);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now + idx * 0.07);
+            osc.stop(now + idx * 0.07 + 0.25);
+          });
+        } else if (type === 'wrong') {
+          // Gentle cartoon buzz
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(180, now);
+          osc.frequency.linearRampToValueAtTime(130, now + 0.3);
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.35);
+        } else if (type === 'click') {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(600, now);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.06);
+        } else if (type === 'win') {
+          const notes = [440, 554.37, 659.25, 880, 659.25, 880];
+          notes.forEach((freq, idx) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.1);
+            gain.gain.setValueAtTime(0.2, now + idx * 0.1);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.1 + 0.3);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now + idx * 0.1);
+            osc.stop(now + idx * 0.1 + 0.3);
+          });
+        }
+      } catch (e) {
+        // Ignore audio errors if blocked
+      }
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      document.getElementById('sound-icon').textContent = soundEnabled ? '🔊' : '🔇';
+      if (soundEnabled) playSound('click');
+    }
+
+    function toggleStudyModal(show) {
+      playSound('click');
+      const modal = document.getElementById('study-modal');
+      if (show) {
+        modal.classList.remove('hidden');
+      } else {
+        modal.classList.add('hidden');
+      }
+    }
+
+    // ---------------------------------------------------------
+    // 3. RANK SYSTEM HELPER
+    // ---------------------------------------------------------
+    function getRankInfo(currentXp) {
+      if (currentXp >= 140) {
+        return { icon: '👑', title: 'Super Citizen', msg: 'Incredible! You are a true master of Citizenship, Rights, and Word Power!' };
+      } else if (currentXp >= 100) {
+        return { icon: '🌟', title: 'Community Guardian', msg: 'Awesome job! You know how to protect your community and use prefixes & suffixes!' };
+      } else if (currentXp >= 50) {
+        return { icon: '🛡️', title: 'Citizen Cadet', msg: 'Good work! Review your mistakes below and play again to become a Super Citizen!' };
+      } else {
+        return { icon: '🌱', title: 'Rookie', msg: 'Great start! Check the Hero Word Guide and try the mission again to level up!' };
+      }
+    }
+
+    // ---------------------------------------------------------
+    // 4. QUIZ FLOW FUNCTIONS
+    // ---------------------------------------------------------
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function startGame() {
+      playSound('click');
+      currentQuestionIndex = 0;
+      xp = 0;
+      streak = 0;
+      bestStreak = 0;
+      correctCount = 0;
+      mistakes = [];
+
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('quiz-screen').classList.remove('hidden');
+
+      updateHud();
+      renderQuestion();
+    }
+
+    function updateHud() {
+      const total = questions.length;
+      document.getElementById('q-counter').textContent = `Mission ${currentQuestionIndex + 1} / ${total}`;
+      document.getElementById('xp-count').textContent = `${xp} XP`;
+      document.getElementById('streak-count').textContent = streak;
+
+      const rank = getRankInfo(xp);
+      document.getElementById('rank-icon').textContent = rank.icon;
+      document.getElementById('rank-title').textContent = rank.title;
+
+      const progressPercent = Math.round(((currentQuestionIndex) / total) * 100);
+      document.getElementById('progress-bar').style.width = `${Math.max(6, progressPercent)}%`;
+    }
+
+    function renderQuestion() {
+      const q = questions[currentQuestionIndex];
+      document.getElementById('q-category').textContent = q.category;
+      document.getElementById('q-emoji').textContent = q.emoji;
+      document.getElementById('q-context').textContent = q.context;
+      document.getElementById('q-text').textContent = q.question;
+
+      // Hide feedback box
+      const feedbackBox = document.getElementById('feedback-box');
+      feedbackBox.classList.add('hidden');
+
+      // Prepare shuffled options while tracking which one is correct
+      const indexedOptions = q.options.map((text, idx) => ({
+        text,
+        isCorrect: idx === q.correct
+      }));
+      const shuffledOptions = shuffleArray(indexedOptions);
+
+      const container = document.getElementById('options-container');
+      container.innerHTML = '';
+
+      const letters = ['A', 'B', 'C', 'D'];
+      shuffledOptions.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn w-full bg-white hover:bg-indigo-50/60 border-2 border-slate-300 rounded-2xl p-4 text-left font-bold text-slate-700 flex items-center gap-3.5 text-sm sm:text-base';
+        btn.dataset.correct = opt.isCorrect;
+        btn.dataset.text = opt.text;
+        btn.innerHTML = `
+          <span class="letter-badge w-9 h-9 rounded-xl bg-indigo-100 text-indigo-700 font-extrabold flex items-center justify-center shrink-0 text-sm border border-indigo-200">
+            ${letters[i]}
+          </span>
+          <span class="flex-1">${opt.text}</span>
+          <span class="status-icon text-xl"></span>
+        `;
+        btn.onclick = () => selectOption(btn, shuffledOptions);
+        container.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedBtn, shuffledOptions) {
+      const q = questions[currentQuestionIndex];
+      const isCorrect = selectedBtn.dataset.correct === 'true';
+      const allButtons = document.querySelectorAll('#options-container button');
+
+      // Disable all buttons so student cannot click again
+      allButtons.forEach(btn => {
+        btn.disabled = true;
+        btn.classList.remove('hover:bg-indigo-50/60');
+      });
+
+      const feedbackBox = document.getElementById('feedback-box');
+      const feedbackIcon = document.getElementById('feedback-icon');
+      const feedbackTitle = document.getElementById('feedback-title');
+      const feedbackExplanation = document.getElementById('feedback-explanation');
+      const feedbackRulePill = document.getElementById('feedback-rule-pill');
+      const nextBtnText = document.getElementById('next-btn-text');
+
+      if (isCorrect) {
+        playSound('correct');
+        xp += 10;
+        streak += 1;
+        if (streak > bestStreak) bestStreak = streak;
+        correctCount += 1;
+
+        // Style selected button green
+        selectedBtn.className = 'option-btn w-full bg-emerald-50 border-2 border-emerald-500 rounded-2xl p-4 text-left font-extrabold text-emerald-900 flex items-center gap-3.5 text-sm sm:text-base shadow-md';
+        selectedBtn.querySelector('.letter-badge').className = 'letter-badge w-9 h-9 rounded-xl bg-emerald-500 text-white font-extrabold flex items-center justify-center shrink-0 text-sm';
+        selectedBtn.querySelector('.status-icon').textContent = '✅';
+
+        // Show positive feedback box
+        feedbackBox.className = 'rounded-3xl p-5 border-2 mb-2 pop-in bg-emerald-50 border-emerald-400';
+        feedbackIcon.textContent = '🎉';
+        feedbackTitle.className = 'text-base sm:text-lg font-extrabold mb-1 text-emerald-800';
+        feedbackTitle.textContent = streak >= 3 ? `Awesome! +10 XP (🔥 ${streak} Streak!)` : 'Correct! Great job! (+10 XP)';
+        feedbackExplanation.textContent = q.explanation;
+        feedbackRulePill.textContent = q.rulePill;
+
+        if (currentQuestionIndex === questions.length - 1) {
+          nextBtnText.textContent = '+10 XP • See Final Rank 🏆';
+        } else {
+          nextBtnText.textContent = '+10 XP • Next Mission';
+        }
+
+        burstConfetti(25);
+      } else {
+        playSound('wrong');
+        streak = 0;
+
+        const correctOptionObj = shuffledOptions.find(o => o.isCorrect);
+
+        // Record mistake for end-of-game review
+        mistakes.push({
+          question: q.question,
+          yourAnswer: selectedBtn.dataset.text,
+          correctAnswer: correctOptionObj.text,
+          explanation: q.explanation,
+          rulePill: q.rulePill
+        });
+
+        // Style wrong button red + shake
+        selectedBtn.className = 'option-btn w-full bg-rose-50 border-2 border-rose-500 rounded-2xl p-4 text-left font-bold text-rose-900 flex items-center gap-3.5 text-sm sm:text-base shake';
+        selectedBtn.querySelector('.letter-badge').className = 'letter-badge w-9 h-9 rounded-xl bg-rose-500 text-white font-extrabold flex items-center justify-center shrink-0 text-sm';
+        selectedBtn.querySelector('.status-icon').textContent = '❌';
+
+        // Highlight the actual correct button in green so student immediately sees it
+        allButtons.forEach(btn => {
+          if (btn.dataset.correct === 'true') {
+            btn.className = 'option-btn w-full bg-emerald-50 border-2 border-emerald-500 rounded-2xl p-4 text-left font-extrabold text-emerald-900 flex items-center gap-3.5 text-sm sm:text-base';
+            btn.querySelector('.letter-badge').className = 'letter-badge w-9 h-9 rounded-xl bg-emerald-500 text-white font-extrabold flex items-center justify-center shrink-0 text-sm';
+            btn.querySelector('.status-icon').textContent = '✅';
+          }
+        });
+
+        // Show immediate simple explanation box
+        feedbackBox.className = 'rounded-3xl p-5 border-2 mb-2 pop-in bg-amber-50 border-amber-400';
+        feedbackIcon.textContent = '💡';
+        feedbackTitle.className = 'text-base sm:text-lg font-extrabold mb-1 text-rose-700';
+        feedbackTitle.innerHTML = `Correct Answer: <span class="underline text-emerald-700">${correctOptionObj.text}</span>`;
+        feedbackExplanation.innerHTML = `<b>Why? 💡</b> ${q.explanation}`;
+        feedbackRulePill.textContent = q.rulePill;
+
+        if (currentQuestionIndex === questions.length - 1) {
+          nextBtnText.textContent = 'Got it! See Final Rank';
+        } else {
+          nextBtnText.textContent = 'Got it! Next Mission';
+        }
+      }
+
+      updateHud();
+
+      // Smooth scroll feedback into view on small screens
+      setTimeout(() => {
+        feedbackBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 100);
+    }
+
+    function nextQuestion() {
+      playSound('click');
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        updateHud();
+        renderQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      playSound('win');
+      burstConfetti(80);
+
+      document.getElementById('quiz-screen').classList.add('hidden');
+      document.getElementById('result-screen').classList.remove('hidden');
+
+      const rank = getRankInfo(xp);
+      document.getElementById('final-badge-icon').textContent = rank.icon;
+      document.getElementById('final-rank-title').textContent = rank.title;
+      document.getElementById('final-message').textContent = rank.msg;
+
+      document.getElementById('final-correct').textContent = `${correctCount} / ${questions.length}`;
+      document.getElementById('final-xp').textContent = `${xp} XP`;
+      document.getElementById('final-streak').textContent = `🔥 ${bestStreak}`;
+
+      const mistakesWrapper = document.getElementById('mistakes-Wrapper');
+      const mistakesList = document.getElementById('mistakes-list');
+      mistakesList.innerHTML = '';
+
+      if (mistakes.length > 0) {
+        mistakesWrapper.classList.remove('hidden');
+        mistakes.forEach((m, idx) => {
+          const card = document.createElement('div');
+          card.className = 'bg-slate-50 border-2 border-slate-200 rounded-2xl p-4 text-xs sm:text-sm';
+          card.innerHTML = `
+            <p class="font-extrabold text-slate-800 mb-1.5">${idx + 1}. ${m.question}</p>
+            <div class="flex flex-wrap gap-2 mb-2">
+              <span class="bg-rose-100 text-rose-800 font-bold px-2.5 py-0.5 rounded-lg">❌ Your Answer: ${m.yourAnswer}</span>
+              <span class="bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-lg">✅ Correct: ${m.correctAnswer}</span>
+            </div>
+            <p class="text-slate-600 mb-1">💡 <b>Why:</b> ${m.explanation}</p>
+            <p class="text-indigo-700 font-bold text-xs">${m.rulePill}</p>
+          `;
+          mistakesList.appendChild(card);
+        });
+      } else {
+        mistakesWrapper.classList.add('hidden');
+      }
+    }
+
+    // ---------------------------------------------------------
+    // 5. LIGHTWEIGHT CONFETTI ENGINE
+    // ---------------------------------------------------------
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function burstConfetti(count) {
+      const colors = ['#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#8b5cf6'];
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: window.innerWidth / 2,
+          y: window.innerHeight / 2,
+          vx: (Math.random() - 0.5) * 14,
+          vy: (Math.random() - 0.8) * 14,
+          size: Math.random() * 8 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          alpha: 1,
+          rotation: Math.random() * 360,
+          vRot: (Math.random() - 0.5) * 10
+        });
+      }
+    }
+
+    function updateConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.35; // gravity
+        p.rotation += p.vRot;
+        p.alpha -= 0.014;
+
+        if (p.alpha <= 0) {
+          particles.splice(i, 1);
+          continue;
+        }
+
+        ctx.save();
+        ctx.globalAlpha = p.alpha;
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rotation * Math.PI) / 180);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+        ctx.restore();
+      }
+      requestAnimationFrame(updateConfetti);
+    }
+
+    window.onload = function () {
+      updateConfetti();
+    };
+  </script>
+</body>
+</html>

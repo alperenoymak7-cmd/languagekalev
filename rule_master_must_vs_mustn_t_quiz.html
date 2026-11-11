@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rule Master! Must vs. Mustn't Challenge (6th Grade)</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #090d16 0%, #1e293b 50%, #0f172a 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+      user-select: none;
+    }
+    h1, h2, h3, .arcade-font {
+      font-family: 'Fredoka', sans-serif;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    .animate-float {
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.88); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .pop-in {
+      animation: popIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+    .shake {
+      animation: shake 0.45s ease-in-out;
+    }
+    .btn-3d {
+      transition: all 0.15s ease;
+      box-shadow: 0 6px 0 rgba(0, 0, 0, 0.28);
+    }
+    .btn-3d:active:not(:disabled) {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.28);
+    }
+    .option-btn {
+      transition: all 0.2s ease;
+      box-shadow: 0 5px 0 #cbd5e1;
+    }
+    .option-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 0 #94a3b8;
+    }
+    .option-btn:active:not(:disabled) {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #94a3b8;
+    }
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #6366f1;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body class="text-slate-800 flex flex-col items-center justify-center p-3 sm:p-6">
+
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+  <!-- Top Header -->
+  <header class="w-full max-w-4xl bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-3 sm:p-4 mb-4 text-white shadow-xl flex flex-wrap items-center justify-between gap-3">
+    <div class="flex items-center gap-3">
+      <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-rose-500 flex items-center justify-center text-2xl shadow-lg border-2 border-white">
+        🛡️
+      </div>
+      <div>
+        <h1 class="text-lg sm:text-xl font-bold tracking-wide text-indigo-300 leading-tight">🛡️ Rule Master! Must vs. Mustn't</h1>
+        <p class="text-xs sm:text-sm text-sky-200 font-semibold">Topic 3: Obligations & Strict Prohibitions</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2 sm:gap-3 ml-auto">
+      <button onclick="toggleStudyModal(true)" class="btn-3d bg-indigo-500 hover:bg-indigo-400 text-white font-extrabold px-3 py-2 sm:px-4 sm:py-2 rounded-2xl text-xs sm:text-sm flex items-center gap-1.5 border-2 border-indigo-200">
+        <span>📖</span> <span>Rule Master Guide</span>
+      </button>
+      <button id="sound-btn" onclick="toggleSound()" class="btn-3d bg-purple-600 hover:bg-purple-500 text-white font-bold p-2 sm:px-3 sm:py-2 rounded-2xl text-sm flex items-center gap-1 border-2 border-purple-300" title="Toggle Sound">
+        <span id="sound-icon">🔊</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="w-full max-w-4xl bg-white rounded-3xl shadow-2xl border-4 border-indigo-400 overflow-hidden relative">
+
+    <!-- START SCREEN -->
+    <section id="start-screen" class="p-6 sm:p-10 text-center flex flex-col items-center">
+      <div class="flex items-center gap-4 mb-5">
+        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-gradient-to-br from-emerald-500 to-teal-600 flex flex-col items-center justify-center text-white shadow-xl border-4 border-emerald-200 animate-float">
+          <span class="text-3xl sm:text-4xl">✅</span>
+          <span class="text-xs font-extrabold uppercase tracking-wider mt-0.5">MUST</span>
+        </div>
+        <span class="text-2xl sm:text-3xl font-extrabold text-slate-400 arcade-font">VS</span>
+        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-gradient-to-br from-rose-500 to-red-600 flex flex-col items-center justify-center text-white shadow-xl border-4 border-rose-200 animate-float" style="animation-delay: 0.4s;">
+          <span class="text-3xl sm:text-4xl">❌</span>
+          <span class="text-xs font-extrabold uppercase tracking-wider mt-0.5">MUSTN'T</span>
+        </div>
+      </div>
+
+      <span class="bg-indigo-100 text-indigo-800 font-extrabold px-4 py-1 rounded-full text-xs sm:text-sm uppercase tracking-wider mb-2">
+        6th Grade • Grammar Arcade Challenge
+      </span>
+      <h2 class="text-2xl sm:text-4xl font-bold text-slate-800 mb-3">Rule Master! Must vs. Mustn't Challenge</h2>
+      <p class="text-slate-600 max-w-xl text-sm sm:text-base mb-6 leading-relaxed">
+        When something is necessary or compulsory, use <b class="text-emerald-600">MUST</b> ✅. When something is forbidden or prohibited, use <b class="text-rose-600">MUSTN'T</b> ❌! Let's see if you can become the Ultimate Rule Master!
+      </p>
+
+      <div class="w-full max-w-2xl bg-slate-50 border-2 border-slate-200 rounded-2xl p-4 mb-7">
+        <p class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-3">🏆 Ranks to Unlock (16 Challenges)</p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-bold">
+          <div class="bg-white p-2.5 rounded-xl border border-slate-200 flex flex-col items-center">
+            <span class="text-2xl mb-1">🐣</span>
+            <span class="text-slate-700">Beginner</span>
+            <span class="text-[11px] text-slate-400">0 - 40 Pts</span>
+          </div>
+          <div class="bg-white p-2.5 rounded-xl border border-slate-200 flex flex-col items-center">
+            <span class="text-2xl mb-1">🧭</span>
+            <span class="text-sky-700">Rule Cadet</span>
+            <span class="text-[11px] text-slate-400">50 - 80 Pts</span>
+          </div>
+          <div class="bg-white p-2.5 rounded-xl border border-slate-200 flex flex-col items-center">
+            <span class="text-2xl mb-1">🛡️</span>
+            <span class="text-indigo-700">Law Guardian</span>
+            <span class="text-[11px] text-slate-400">90 - 130 Pts</span>
+          </div>
+          <div class="bg-gradient-to-b from-amber-50 to-orange-50 p-2.5 rounded-xl border-2 border-amber-300 flex flex-col items-center">
+            <span class="text-2xl mb-1">👑</span>
+            <span class="text-amber-700">Rule Master</span>
+            <span class="text-[11px] text-amber-600">140 - 160 Pts</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center">
+        <button onclick="toggleStudyModal(true)" class="btn-3d bg-indigo-500 hover:bg-indigo-400 text-white font-extrabold px-6 py-4 rounded-2xl text-base sm:text-lg flex items-center justify-center gap-2">
+          <span>📖</span> <span>Open Rule Master Guide</span>
+        </button>
+        <button onclick="startGame()" class="btn-3d bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold px-8 py-4 rounded-2xl text-base sm:text-lg flex items-center justify-center gap-2">
+          <span>🚀</span> <span>Start Challenge (16 Questions)</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- QUIZ PLAY SCREEN -->
+    <section id="quiz-screen" class="hidden">
+      <div class="bg-slate-100 border-b-2 border-slate-200 p-4 sm:px-6">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span id="q-counter" class="bg-indigo-600 text-white font-extrabold px-3 py-1 rounded-xl text-xs sm:text-sm">
+              Question 1 / 16
+            </span>
+            <span id="q-category" class="bg-purple-100 text-purple-900 border border-purple-300 font-extrabold px-3 py-1 rounded-xl text-xs sm:text-sm">
+              ✅ Must or ❌ Mustn't?
+            </span>
+          </div>
+
+          <div class="flex items-center gap-2 sm:gap-3">
+            <div class="bg-white border-2 border-indigo-300 px-3 py-1 rounded-xl flex items-center gap-1.5 shadow-sm">
+              <span id="rank-icon" class="text-base">🐣</span>
+              <span id="rank-title" class="text-xs font-extrabold text-slate-700 hidden sm:inline">Beginner</span>
+            </div>
+            <div class="bg-white border-2 border-orange-300 px-3 py-1 rounded-xl flex items-center gap-1 shadow-sm" title="Current Streak">
+              <span>🔥</span>
+              <span id="streak-count" class="text-xs sm:text-sm font-extrabold text-orange-600">0</span>
+            </div>
+            <div class="bg-white border-2 border-emerald-400 px-3 py-1 rounded-xl flex items-center gap-1 shadow-sm">
+              <span>⭐</span>
+              <span id="score-count" class="text-xs sm:text-sm font-extrabold text-emerald-700">0 Pts</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full bg-slate-200 h-3 rounded-full overflow-hidden">
+          <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-500 h-full rounded-full transition-all duration-500" style="width: 6%"></div>
+        </div>
+      </div>
+
+      <div class="p-5 sm:p-8">
+        <div id="question-box" class="bg-indigo-50/70 border-2 border-indigo-100 rounded-3xl p-5 sm:p-6 mb-6 text-center sm:text-left flex flex-col sm:flex-row items-center gap-4">
+          <div id="q-emoji" class="w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-2xl bg-white shadow-md border-2 border-indigo-200 flex items-center justify-center text-4xl sm:text-5xl">
+            🏫
+          </div>
+          <div class="flex-1">
+            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-1.5">
+              <span id="q-clue-badge" class="text-xs font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-lg bg-emerald-100 text-emerald-700">
+                ✅ Obligation Clue
+              </span>
+            </div>
+            <h3 id="q-text" class="text-lg sm:text-2xl font-bold text-slate-800 leading-snug">
+              Loading challenge...
+            </h3>
+          </div>
+        </div>
+
+        <div id="options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-6"></div>
+
+        <div id="feedback-box" class="hidden rounded-3xl p-5 border-2 mb-2 pop-in">
+          <div class="flex items-start gap-3.5">
+            <div id="feedback-icon" class="text-3xl sm:text-4xl shrink-0 mt-0.5">💡</div>
+            <div class="flex-1">
+              <h4 id="feedback-title" class="text-base sm:text-lg font-extrabold mb-1">Feedback Title</h4>
+              <p id="feedback-explanation" class="text-sm sm:text-base text-slate-700 leading-relaxed mb-3">Simple explanation...</p>
+              <div id="feedback-rule-pill" class="inline-block bg-white/95 border border-slate-300 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-extrabold text-indigo-900 shadow-sm">
+                📌 Grammar Rule
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 flex justify-end">
+            <button id="next-btn" onclick="nextQuestion()" class="btn-3d bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-3 rounded-2xl text-sm sm:text-base flex items-center gap-2">
+              <span id="next-btn-text">Next Challenge</span> <span>➡️</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULT SCREEN -->
+    <section id="result-screen" class="hidden p-6 sm:p-10 text-center">
+      <div id="final-badge-icon" class="w-24 h-24 sm:w-28 sm:h-28 mx-auto rounded-full bg-gradient-to-tr from-amber-400 to-orange-500 flex items-center justify-center text-5xl sm:text-6xl shadow-xl mb-4 border-4 border-white animate-float">
+        👑
+      </div>
+      <p class="text-xs font-extrabold uppercase tracking-widest text-indigo-600 mb-1">Challenge Complete!</p>
+      <h2 id="final-rank-title" class="text-2xl sm:text-4xl font-bold text-slate-800 mb-2">Rule Master!</h2>
+      <p id="final-message" class="text-slate-600 max-w-lg mx-auto text-sm sm:text-base mb-6">
+        Fantastic work! You know when to use must and mustn't perfectly!
+      </p>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto mb-8">
+        <div class="bg-emerald-50 border-2 border-emerald-200 p-3 sm:p-4 rounded-2xl">
+          <p class="text-xs font-bold text-emerald-700 uppercase">Score</p>
+          <p id="final-score" class="text-xl sm:text-2xl font-extrabold text-emerald-600">160 Pts</p>
+        </div>
+        <div class="bg-sky-50 border-2 border-sky-200 p-3 sm:p-4 rounded-2xl">
+          <p class="text-xs font-bold text-sky-700 uppercase">Correct</p>
+          <p id="final-correct" class="text-xl sm:text-2xl font-extrabold text-sky-600">16 / 16</p>
+        </div>
+        <div class="bg-purple-50 border-2 border-purple-200 p-3 sm:p-4 rounded-2xl">
+          <p class="text-xs font-bold text-purple-700 uppercase">Accuracy</p>
+          <p id="final-accuracy" class="text-xl sm:text-2xl font-extrabold text-purple-600">100%</p>
+        </div>
+        <div class="bg-orange-50 border-2 border-orange-200 p-3 sm:p-4 rounded-2xl">
+          <p class="text-xs font-bold text-orange-700 uppercase">Best Streak</p>
+          <p id="final-streak" class="text-xl sm:text-2xl font-extrabold text-orange-600">🔥 16</p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-3 justify-center mb-6">
+        <button id="review-mistakes-btn" onclick="toggleMistakesReview()" class="hidden btn-3d bg-rose-500 hover:bg-rose-400 text-white font-bold px-6 py-3.5 rounded-2xl text-sm sm:text-base flex items-center justify-center gap-2">
+          <span>🔍</span> <span id="review-btn-label">Review Mistakes</span>
+        </button>
+        <button onclick="toggleStudyModal(true)" class="btn-3d bg-indigo-500 hover:bg-indigo-400 text-white font-extrabold px-6 py-3.5 rounded-2xl text-sm sm:text-base flex items-center justify-center gap-2">
+          <span>📖</span> <span>Rule Master Guide</span>
+        </button>
+        <button onclick="startGame()" class="btn-3d bg-emerald-500 hover:bg-emerald-400 text-white font-bold px-8 py-3.5 rounded-2xl text-sm sm:text-base flex items-center justify-center gap-2">
+          <span>🔄</span> <span>Play Again</span>
+        </button>
+      </div>
+
+      <div id="mistakes-wrapper" class="hidden text-left max-w-2xl mx-auto mt-4 border-t-2 border-slate-100 pt-6">
+        <h3 class="text-lg font-bold text-rose-600 mb-3 flex items-center gap-2">
+          <span>🛠️</span> <span>Your Mistake Log (Read & Learn!)</span>
+        </h3>
+        <div id="mistakes-list" class="space-y-3 max-h-96 overflow-y-auto pr-2"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: RULE MASTER GUIDE -->
+  <div id="study-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-40 hidden flex items-center justify-center p-3 sm:p-6">
+    <div class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl border-4 border-indigo-400 overflow-hidden flex flex-col max-h-[90vh] pop-in">
+      <div class="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 sm:px-6 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <span class="text-2xl">📖</span>
+          <div>
+            <h3 class="text-lg sm:text-xl font-bold leading-none">Rule Master Guide: Must vs. Mustn't</h3>
+            <p class="text-xs text-indigo-200 mt-0.5">Learn the rules before or during the game!</p>
+          </div>
+        </div>
+        <button onclick="toggleStudyModal(false)" class="bg-white/20 hover:bg-white/30 text-white font-bold w-9 h-9 rounded-full flex items-center justify-center text-lg">
+          ✕
+        </button>
+      </div>
+
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-5 text-sm sm:text-base">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-3xl">✅</span>
+              <div>
+                <h4 class="font-extrabold text-emerald-800 text-base sm:text-lg leading-tight">MUST = OBLIGATION</h4>
+                <p class="text-xs font-bold text-emerald-600">(Zorunluluk / Yapmalısın)</p>
+              </div>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700 mb-2">
+              Use <b>must</b> when something is necessary, important, or required by a rule!
+            </p>
+            <div class="bg-white p-2.5 rounded-xl border border-emerald-200 text-xs sm:text-sm font-semibold">
+              <p class="text-slate-800">✅ "I <span class="text-emerald-600 underline">must</span> study for my English exam."</p>
+              <p class="text-slate-500 text-xs mt-0.5">➔ It is necessary!</p>
+            </div>
+          </div>
+
+          <div class="bg-rose-50 border-2 border-rose-300 rounded-2xl p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-3xl">❌</span>
+              <div>
+                <h4 class="font-extrabold text-rose-800 text-base sm:text-lg leading-tight">MUSTN'T = PROHIBITION</h4>
+                <p class="text-xs font-bold text-rose-600">(Yasak / Yapmamalısın)</p>
+              </div>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700 mb-2">
+              Use <b>mustn't</b> when something is forbidden or against the rules!
+            </p>
+            <div class="bg-white p-2.5 rounded-xl border border-rose-200 text-xs sm:text-sm font-semibold">
+              <p class="text-slate-800">❌ "You <span class="text-rose-600 underline">mustn't</span> run in the school hallway."</p>
+              <p class="text-slate-500 text-xs mt-0.5">➔ It is forbidden / dangerous!</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-indigo-50 border-2 border-indigo-300 rounded-2xl p-4">
+          <h4 class="font-extrabold text-indigo-900 text-base sm:text-lg mb-1.5 flex items-center gap-2">
+            <span>🌟</span> <span>Golden Rule: Clean Base Verb (V1)!</span>
+          </h4>
+          <p class="text-xs sm:text-sm text-slate-700 mb-2">
+            Formula: <b>must / mustn't + V1 (clean verb for ALL subjects: I, you, he, she, we, they)</b>
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm font-bold">
+            <div class="bg-emerald-100 text-emerald-900 p-2.5 rounded-xl border border-emerald-300">
+              ✅ She must <u>go</u> home.<br>
+              ✅ They mustn't <u>touch</u> this.
+            </div>
+            <div class="bg-rose-100 text-rose-900 p-2.5 rounded-xl border border-rose-300">
+              ❌ She must <s>goes</s> home.<br>
+              ❌ They mustn't <s>to touch</s> this.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-100 p-4 border-t border-slate-200 flex justify-end">
+        <button onclick="toggleStudyModal(false)" class="btn-3d bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-2.5 rounded-2xl text-sm sm:text-base">
+          Got It! Back to Challenge 👍
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        id: 1,
+        category: "✅ School Duty",
+        clueBadge: "✅ Clue: Necessary duty",
+        clueColor: "bg-emerald-100 text-emerald-700",
+        emoji: "📚",
+        question: "We have an important exam tomorrow. We ___ study hard tonight.",
+        options: ["must", "mustn't", "can", "don't"],
+        correct: 0,
+        explanation: "Studying for an exam is a necessary obligation, so we use 'must'!",
+        rulePill: "📌 Obligation = must"
+      },
+      {
+        id: 2,
+        category: "❌ Strict Prohibition",
+        clueBadge: "❌ Clue: Forbidden in class",
+        clueColor: "bg-rose-100 text-rose-700",
+        emoji: "📵",
+        question: "Phones are not allowed during lessons. You ___ use your phone in class.",
+        options: ["mustn't", "must", "have to", "let"],
+        correct: 0,
+        explanation: "Using a phone during lessons is forbidden against school rules, so we use 'mustn't'!",
+        rulePill: "📌 Prohibition / Forbidden = mustn't"
+      },
+      {
+        id: 3,
+        category: "✅ Safety Rule",
+        clueBadge: "✅ Clue: Important safety rule",
+        clueColor: "bg-emerald-100 text-emerald-700",
+        emoji: "🚗",
+        question: "When you are in a car, you ___ wear your seatbelt for safety.",
+        options: ["must", "mustn't", "make", "let"],
+        correct: 0,
+        explanation: "Wearing a seatbelt is compulsory for safety, so we use 'must'!",
+        rulePill: "📌 Safety duty = must"
+      },
+      {
+        id: 4,
+        category: "❌ Library Rule",
+        clueBadge: "❌ Clue: Forbidden in library",
+        clueColor: "bg-rose-100 text-rose-700",
+        emoji: "🤫",
+        question: "The library is a quiet place. You ___ shout or run inside.",
+        options: ["mustn't", "must", "do", "does"],
+        correct: 0,
+        explanation: "Shouting and running in the library are strictly forbidden, so we use 'mustn't'!",
+        rulePill: "📌 Library prohibition = mustn't"
+      },
+      {
+        id: 5,
+        category: "✅ Health Duty",
+        clueBadge: "✅ Clue: Good for health",
+        clueColor: "bg-emerald-100 text-emerald-700",
+        emoji: "🪥",
+        question: "To keep your teeth healthy and strong, you ___ brush them twice a day.",
+        options: ["must", "mustn't", "can't", "doesn't"],
+        correct: 0,
+        explanation: "Brushing teeth is an important personal health duty, so we use 'must'!",
+        rulePill: "📌 Health obligation = must"
+      },
+      {
+        id: 6,
+        category: "❌ Park Rule",
+        clueBadge: "❌ Clue: Against park rules",
+        clueColor: "bg-rose-100 text-rose-700",
+        emoji: "🌸",
+        question: "Look at the sign: 'DO NOT PICK FLOWERS!' You ___ pick flowers in the park.",
+        options: ["mustn't", "must", "make", "lets"],
+        correct: 0,
+        explanation: "Picking flowers is prohibited by park rules, so we use 'mustn't'!",
+        rulePill: "📌 Park prohibition = mustn't"
+      },
+      {
+        id: 7,
+        category: "✅ Classroom Rule",
+        clueBadge: "✅ Clue: Polite classroom behavior",
+        clueColor: "bg-emerald-100 text-emerald-700",
+        emoji: "🙋‍♂️",
+        question: "If you want to speak during the lesson, you ___ raise your hand first.",
+        options: ["must", "mustn't", "don't", "doesn't"],
+        correct: 0,
+        explanation: "Raising your hand is the required classroom procedure, so we use 'must'!",
+        rulePill: "📌 Classroom rule = must"
+      },
+      {
+        id: 8,
+        category: "❌ Zoo Rule",
+        clueBadge: "❌ Clue: Dangerous rule",
+        clueColor: "bg-rose-100 text-rose-700",
+        emoji: "🐅",
+        question: "At the zoo, you ___ feed the wild animals. It is dangerous!",
+        options: ["mustn't", "must", "can", "are"],
+        correct: 0,
+        explanation: "Feeding wild animals is dangerous and forbidden, so we use 'mustn't'!",
+        rulePill: "📌 Safety prohibition = mustn't"
+      },
+      {
+        id: 9,
+        category: "✅ Honesty & Respect",
+        clueBadge: "✅ Clue: Important moral value",
+        clueColor: "bg-emerald-100 text-emerald-700",
+        emoji: "🤝",
+        question: "A good friend is honest and loyal. You ___ always tell the truth to your friends.",
+        options: ["must", "mustn't", "let", "make"],
+        correct: 0,
+        explanation: "Being honest is a necessary duty of friendship, so we use 'must'!",
+        rulePill: "📌 Moral obligation = must"
+      },
+      {
+        id: 10,
+        category: "❌ Traffic Law",
+        clueBadge: "❌ Clue: Red light traffic rule",
+        clueColor: "bg-rose-100 text-rose-700",
+        emoji: "🚦",
+        question: "The traffic light is red. Pedestrians ___ cross the street right now.",
+        options: ["mustn't", "must", "do", "does"],
+        correct: 0,
+        explanation: "Crossing on a red light is a dangerous traffic violation, so we use 'mustn't'!",
+        rulePill: "📌 Traffic prohibition = mustn't"
+      },
+      {
+        id: 11,
+        category: "✅ Exam Rule",
+        clueBadge: "✅ Clue: Academic rule",
+        clueColor: "bg-emerald-100 text-emerald-700",
+        emoji: "✍️",
+        question: "During a school exam, you ___ write your name at the top of the paper.",
+        options: ["must", "mustn't", "can't", "doesn't"],
+        correct: 0,
+        explanation: "Writing your name on your exam paper is required, so we use 'must'!",
+        rulePill: "📌 Required exam action = must"
+      },
+      {
+        id: 12,
+        category: "❌ Exam Rule",
+        clueBadge: "❌ Clue: Cheating prohibition",
+        clueColor: "bg-rose-100 text-rose-700",
+        emoji: "👀",
+        question: "During an exam, you ___ look at your classmate's paper. That is cheating!",
+        options: ["mustn't", "must", "let", "make"],
+        correct: 0,
+        explanation: "Cheating is strictly forbidden in school, so we use 'mustn't'!",
+        rulePill: "📌 Cheating prohibition = mustn't"
+      },
+      {
+        id: 13,
+        category: "✅ Environmental Duty",
+        clueBadge: "✅ Clue: Protecting nature",
+        clueColor: "bg-emerald-100 text-emerald-700",
+        emoji: "♻️",
+        question: "To protect our environment, we ___ recycle our plastic and paper rubbish.",
+        options: ["must", "mustn't", "do", "does"],
+        correct: 0,
+        explanation: "Recycling is an essential duty to protect our planet, so we use 'must'!",
+        rulePill: "📌 Environmental obligation = must"
+      },
+      {
+        id: 14,
+        category: "❌ Classroom Rule",
+        clueBadge: "❌ Clue: Eating in class",
+        clueColor: "bg-rose-100 text-rose-700",
+        emoji: "🍔",
+        question: "You ___ eat or drink snacks during a regular lesson. Wait for lunchtime!",
+        options: ["mustn't", "must", "can", "are"],
+        correct: 0,
+        explanation: "Eating snacks during lessons goes against classroom rules, so we use 'mustn't'!",
+        rulePill: "📌 Classroom prohibition = mustn't"
+      },
+      {
+        id: 15,
+        category: "✅ Health Rule",
+        clueBadge: "✅ Clue: Hand hygiene",
+        clueColor: "bg-emerald-100 text-emerald-700",
+        emoji: "🧼",
+        question: "Before you sit down to eat your lunch, you ___ wash your hands with soap.",
+        options: ["must", "mustn't", "have", "make"],
+        correct: 0,
+        explanation: "Washing hands before eating is a vital hygiene duty, so we use 'must'!",
+        rulePill: "📌 Hygiene obligation = must"
+      },
+      {
+        id: 16,
+        category: "🛡️ Master Challenge",
+        clueBadge: "🔥 Final Boss: Must & Mustn't Combo",
+        clueColor: "bg-indigo-100 text-indigo-700",
+        emoji: "🏫",
+        question: "At school, you ___ wear your uniform, but you ___ wear dirty sneakers!",
+        options: [
+          "must / mustn't",
+          "mustn't / must",
+          "must / must",
+          "mustn't / mustn't"
+        ],
+        correct: 0,
+        explanation: "Wearing your uniform is an obligation ('must'), while wearing dirty sneakers is forbidden ('mustn't')!",
+        rulePill: "📌 Uniform obligation (must ✅) + Dirty sneakers prohibition (mustn't ❌)"
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let streak = 0;
+    let bestStreak = 0;
+    let correctCount = 0;
+    let mistakes = [];
+    let soundEnabled = true;
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) audioCtx = new AudioContext();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playSound(type) {
+      if (!soundEnabled) return;
+      try {
+        initAudio();
+        if (!audioCtx) return;
+
+        const now = audioCtx.currentTime;
+        if (type === 'correct') {
+          const notes = [523.25, 659.25, 783.99, 1046.50];
+          notes.forEach((freq, idx) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.065);
+            gain.gain.setValueAtTime(0.18, now + idx * 0.065);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.065 + 0.24);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now + idx * 0.065);
+            osc.stop(now + idx * 0.065 + 0.24);
+          });
+        } else if (type === 'wrong') {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(175, now);
+          osc.frequency.linearRampToValueAtTime(125, now + 0.32);
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.35);
+        } else if (type === 'click') {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(580, now);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.06);
+        } else if (type === 'win') {
+          const notes = [440, 554.37, 659.25, 880, 659.25, 880];
+          notes.forEach((freq, idx) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.1);
+            gain.gain.setValueAtTime(0.2, now + idx * 0.1);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.1 + 0.3);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now + idx * 0.1);
+            osc.stop(now + idx * 0.1 + 0.3);
+          });
+        }
+      } catch (e) {}
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      document.getElementById('sound-icon').textContent = soundEnabled ? '🔊' : '🔇';
+      if (soundEnabled) playSound('click');
+    }
+
+    function toggleStudyModal(show) {
+      playSound('click');
+      const modal = document.getElementById('study-modal');
+      if (show) {
+        modal.classList.remove('hidden');
+      } else {
+        modal.classList.add('hidden');
+      }
+    }
+
+    function getRankInfo(currentScore) {
+      if (currentScore >= 140) {
+        return { icon: '👑', title: 'Rule Master', msg: 'Incredible! You are a true Rule Master! You know every obligation and prohibition!' };
+      } else if (currentScore >= 90) {
+        return { icon: '🛡️', title: 'Law Guardian', msg: 'Great job! You know must and mustn’t very well. Check your mistakes below to reach Master rank!' };
+      } else if (currentScore >= 50) {
+        return { icon: '🧭', title: 'Rule Cadet', msg: 'Nice effort! Review the Rule Master Guide and your mistakes below, then play again!' };
+      } else {
+        return { icon: '🐣', title: 'Beginner', msg: 'Good start! Open the Rule Master Guide to review must vs. mustn’t, then try again!' };
+      }
+    }
+
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function startGame() {
+      playSound('click');
+      currentQuestionIndex = 0;
+      score = 0;
+      streak = 0;
+      bestStreak = 0;
+      correctCount = 0;
+      mistakes = [];
+
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('mistakes-wrapper').classList.add('hidden');
+      document.getElementById('quiz-screen').classList.remove('hidden');
+
+      updateHud();
+      renderQuestion();
+    }
+
+    function updateHud() {
+      const total = questions.length;
+      document.getElementById('q-counter').textContent = `Question ${currentQuestionIndex + 1} / ${total}`;
+      document.getElementById('score-count').textContent = `${score} Pts`;
+      document.getElementById('streak-count').textContent = streak;
+
+      const rank = getRankInfo(score);
+      document.getElementById('rank-icon').textContent = rank.icon;
+      document.getElementById('rank-title').textContent = rank.title;
+
+      const progressPercent = Math.round(((currentQuestionIndex) / total) * 100);
+      document.getElementById('progress-bar').style.width = `${Math.max(6, progressPercent)}%`;
+    }
+
+    function renderQuestion() {
+      const q = questions[currentQuestionIndex];
+      document.getElementById('q-category').textContent = q.category;
+      document.getElementById('q-emoji').textContent = q.emoji;
+
+      const clueBadge = document.getElementById('q-clue-badge');
+      clueBadge.textContent = q.clueBadge;
+      clueBadge.className = `text-xs font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-lg ${q.clueColor}`;
+
+      document.getElementById('q-text').innerHTML = q.question.replace(/___/g, '<span class="inline-block border-b-4 border-indigo-500 px-3 text-indigo-600 font-extrabold">_____</span>');
+      document.getElementById('feedback-box').classList.add('hidden');
+
+      const indexedOptions = q.options.map((text, idx) => ({
+        text,
+        isCorrect: idx === q.correct
+      }));
+      const shuffledOptions = shuffleArray(indexedOptions);
+
+      const container = document.getElementById('options-container');
+      container.innerHTML = '';
+
+      const letters = ['A', 'B', 'C', 'D'];
+      shuffledOptions.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn w-full bg-white hover:bg-indigo-50/70 border-2 border-slate-300 rounded-2xl p-4 text-left font-bold text-slate-700 flex items-center gap-3.5 text-sm sm:text-base';
+        btn.dataset.correct = opt.isCorrect;
+        btn.dataset.text = opt.text;
+        btn.innerHTML = `
+          <span class="letter-badge w-9 h-9 rounded-xl bg-indigo-100 text-indigo-800 font-extrabold flex items-center justify-center shrink-0 text-sm border border-indigo-200">
+            ${letters[i]}
+          </span>
+          <span class="flex-1">${opt.text}</span>
+          <span class="status-icon text-xl"></span>
+        `;
+        btn.onclick = () => selectOption(btn, shuffledOptions);
+        container.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedBtn, shuffledOptions) {
+      const q = questions[currentQuestionIndex];
+      const isCorrect = selectedBtn.dataset.correct === 'true';
+      const allButtons = document.querySelectorAll('#options-container button');
+
+      allButtons.forEach(btn => {
+        btn.disabled = true;
+        btn.classList.remove('hover:bg-indigo-50/70');
+      });
+
+      const feedbackBox = document.getElementById('feedback-box');
+      const feedbackIcon = document.getElementById('feedback-icon');
+      const feedbackTitle = document.getElementById('feedback-title');
+      const feedbackExplanation = document.getElementById('feedback-explanation');
+      const feedbackRulePill = document.getElementById('feedback-rule-pill');
+      const nextBtnText = document.getElementById('next-btn-text');
+
+      if (isCorrect) {
+        playSound('correct');
+        score += 10;
+        streak += 1;
+        if (streak > bestStreak) bestStreak = streak;
+        correctCount += 1;
+
+        selectedBtn.className = 'option-btn w-full bg-emerald-50 border-2 border-emerald-500 rounded-2xl p-4 text-left font-extrabold text-emerald-900 flex items-center gap-3.5 text-sm sm:text-base shadow-md';
+        selectedBtn.querySelector('.letter-badge').className = 'letter-badge w-9 h-9 rounded-xl bg-emerald-500 text-white font-extrabold flex items-center justify-center shrink-0 text-sm';
+        selectedBtn.querySelector('.status-icon').textContent = '✅';
+
+        feedbackBox.className = 'rounded-3xl p-5 border-2 mb-2 pop-in bg-emerald-50 border-emerald-400';
+        feedbackIcon.textContent = '🎉';
+        feedbackTitle.className = 'text-base sm:text-lg font-extrabold mb-1 text-emerald-800';
+        feedbackTitle.textContent = streak >= 3 ? `Awesome! 🎉 +10 Pts (🔥 ${streak} Streak!)` : 'Awesome! 🎉 Correct Answer! (+10 Pts)';
+        feedbackExplanation.textContent = q.explanation;
+        feedbackRulePill.textContent = q.rulePill;
+
+        if (currentQuestionIndex === questions.length - 1) {
+          nextBtnText.textContent = 'See Final Results 🏆';
+        } else {
+          nextBtnText.textContent = 'Next Challenge';
+        }
+
+        burstConfetti(28);
+      } else {
+        playSound('wrong');
+        streak = 0;
+
+        const correctOptionObj = shuffledOptions.find(o => o.isCorrect);
+
+        mistakes.push({
+          question: q.question,
+          yourAnswer: selectedBtn.dataset.text,
+          correctAnswer: correctOptionObj.text,
+          explanation: q.explanation,
+          rulePill: q.rulePill
+        });
+
+        selectedBtn.className = 'option-btn w-full bg-rose-50 border-2 border-rose-500 rounded-2xl p-4 text-left font-bold text-rose-900 flex items-center gap-3.5 text-sm sm:text-base shake';
+        selectedBtn.querySelector('.letter-badge').className = 'letter-badge w-9 h-9 rounded-xl bg-rose-500 text-white font-extrabold flex items-center justify-center shrink-0 text-sm';
+        selectedBtn.querySelector('.status-icon').textContent = '❌';
+
+        allButtons.forEach(btn => {
+          if (btn.dataset.correct === 'true') {
+            btn.className = 'option-btn w-full bg-emerald-50 border-2 border-emerald-500 rounded-2xl p-4 text-left font-extrabold text-emerald-900 flex items-center gap-3.5 text-sm sm:text-base';
+            btn.querySelector('.letter-badge').className = 'letter-badge w-9 h-9 rounded-xl bg-emerald-500 text-white font-extrabold flex items-center justify-center shrink-0 text-sm';
+            btn.querySelector('.status-icon').textContent = '✅';
+          }
+        });
+
+        feedbackBox.className = 'rounded-3xl p-5 border-2 mb-2 pop-in bg-amber-50 border-amber-400';
+        feedbackIcon.textContent = '💡';
+        feedbackTitle.className = 'text-base sm:text-lg font-extrabold mb-1 text-rose-700';
+        feedbackTitle.innerHTML = `Correct Answer: <span class="underline text-emerald-700">${correctOptionObj.text}</span>`;
+        feedbackExplanation.innerHTML = `<b>Why? 💡</b> ${q.explanation}`;
+        feedbackRulePill.textContent = q.rulePill;
+
+        if (currentQuestionIndex === questions.length - 1) {
+          nextBtnText.textContent = 'Got it! See Final Results';
+        } else {
+          nextBtnText.textContent = 'Got it! Next Challenge';
+        }
+      }
+
+      updateHud();
+
+      setTimeout(() => {
+        feedbackBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 100);
+    }
+
+    function nextQuestion() {
+      playSound('click');
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        updateHud();
+        renderQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      playSound('win');
+      burstConfetti(85);
+
+      document.getElementById('quiz-screen').classList.add('hidden');
+      document.getElementById('result-screen').classList.remove('hidden');
+
+      const total = questions.length;
+      const accuracy = Math.round((correctCount / total) * 100);
+      const rank = getRankInfo(score);
+
+      document.getElementById('final-badge-icon').textContent = rank.icon;
+      document.getElementById('final-rank-title').textContent = rank.title;
+      document.getElementById('final-message').textContent = rank.msg;
+
+      document.getElementById('final-score').textContent = `${score} Pts`;
+      document.getElementById('final-correct').textContent = `${correctCount} / ${total}`;
+      document.getElementById('final-accuracy').textContent = `${accuracy}%`;
+      document.getElementById('final-streak').textContent = `🔥 ${bestStreak}`;
+
+      const reviewBtn = document.getElementById('review-mistakes-btn');
+      const mistakesList = document.getElementById('mistakes-list');
+      mistakesList.innerHTML = '';
+
+      if (mistakes.length > 0) {
+        reviewBtn.classList.remove('hidden');
+        document.getElementById('review-btn-label').textContent = `Review Mistakes (${mistakes.length})`;
+
+        mistakes.forEach((m, idx) => {
+          const card = document.createElement('div');
+          card.className = 'bg-slate-50 border-2 border-slate-200 rounded-2xl p-4 text-xs sm:text-sm';
+          card.innerHTML = `
+            <p class="font-extrabold text-slate-800 mb-1.5">${idx + 1}. ${m.question}</p>
+            <div class="flex flex-wrap gap-2 mb-2">
+              <span class="bg-rose-100 text-rose-800 font-bold px-2.5 py-0.5 rounded-lg">❌ Your Answer: ${m.yourAnswer}</span>
+              <span class="bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-lg">✅ Correct: ${m.correctAnswer}</span>
+            </div>
+            <p class="text-slate-600 mb-1">💡 <b>Why:</b> ${m.explanation}</p>
+            <p class="text-indigo-700 font-bold text-xs">${m.rulePill}</p>
+          `;
+          mistakesList.appendChild(card);
+        });
+      } else {
+        reviewBtn.classList.add('hidden');
+      }
+    }
+
+    function toggleMistakesReview() {
+      playSound('click');
+      const wrapper = document.getElementById('mistakes-wrapper');
+      wrapper.classList.toggle('hidden');
+      if (!wrapper.classList.contains('hidden')) {
+        wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function burstConfetti(count) {
+      const colors = ['#6366f1', '#10b981', '#f59e0b', '#f43f5e', '#8b5cf6'];
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: window.innerWidth / 2,
+          y: window.innerHeight / 2,
+          vx: (Math.random() - 0.5) * 14,
+          vy: (Math.random() - 0.8) * 14,
+          size: Math.random() * 8 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          alpha: 1,
+          rotation: Math.random() * 360,
+          vRot: (Math.random() - 0.5) * 10
+        });
+      }
+    }
+
+    function updateConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.35;
+        p.rotation += p.vRot;
+        p.alpha -= 0.014;
+
+        if (p.alpha <= 0) {
+          particles.splice(i, 1);
+          continue;
+        }
+
+        ctx.save();
+        ctx.globalAlpha = p.alpha;
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rotation * Math.PI) / 180);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+        ctx.restore();
+      }
+      requestAnimationFrame(updateConfetti);
+    }
+
+    window.onload = function () {
+      updateConfetti();
+    };
+  </script>
+</body>
+</html>

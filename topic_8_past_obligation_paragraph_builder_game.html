@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic 8: Past Obligation Paragraph Builder (Had to / Didn't have to)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #fdf4ff;
+        }
+        h1, h2, h3, .font-heading {
+            font-family: 'Fredoka', sans-serif;
+        }
+        .bounce-hover:hover {
+            transform: translateY(-3px);
+            transition: all 0.2s ease;
+        }
+        .pulse-star {
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 flex flex-col justify-between">
+
+    <!-- Top Navigation / Header -->
+    <header class="bg-purple-600 text-white shadow-md p-4 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <span class="text-3xl"><i class="fa-solid fa-clock-rotate-left text-amber-300"></i></span>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold leading-none">Topic 8: Past Obligations Builder</h1>
+                    <p class="text-xs text-purple-100 font-semibold mt-1">Had to & Didn't have to (Age 11 / Grade 6)</p>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="flex items-center gap-4 bg-purple-700/60 px-4 py-2 rounded-2xl border border-purple-500">
+                <div class="flex items-center gap-1.5">
+                    <i class="fa-solid fa-star text-yellow-300 text-lg pulse-star"></i>
+                    <span id="score" class="font-bold text-lg">0</span>
+                </div>
+                <div class="h-5 w-px bg-purple-500"></div>
+                <div class="flex items-center gap-1.5">
+                    <i class="fa-solid fa-trophy text-amber-300 text-lg"></i>
+                    <span id="level-indicator" class="font-bold text-sm">Stage 1/7</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-4xl mx-auto w-full p-4 flex-grow flex flex-col justify-center">
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-200 h-3 rounded-full mb-6 overflow-hidden shadow-inner">
+            <div id="progress-bar" class="bg-purple-500 h-full w-[14%] transition-all duration-500 ease-out"></div>
+        </div>
+
+        <!-- Game Screen Card -->
+        <div class="bg-white rounded-3xl shadow-xl border-4 border-purple-200 overflow-hidden flex flex-col min-h-[420px]">
+            
+            <!-- Question/Prompt Header -->
+            <div class="bg-purple-50 p-6 border-b border-purple-100">
+                <div class="flex justify-between items-center mb-2">
+                    <span id="badge-topic" class="bg-purple-200 text-purple-800 text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider">
+                        Stage 1: Topic Sentence
+                    </span>
+                    <button onclick="toggleRuleHelp()" class="text-xs text-purple-700 font-bold hover:underline flex items-center gap-1">
+                        <i class="fa-solid fa-circle-info text-purple-500"></i> Need Rule Help?
+                    </button>
+                </div>
+                <h2 id="question-text" class="text-lg md:text-xl font-bold text-slate-800 mt-1">
+                    Loading question...
+                </h2>
+            </div>
+
+            <!-- Quiz Options Area -->
+            <div class="p-6 flex-grow flex flex-col justify-center">
+                <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Dynamic option buttons go here -->
+                </div>
+
+                <!-- Explanation / Feedback Box -->
+                <div id="feedback-box" class="hidden mt-6 p-4 rounded-2xl transition-all duration-300">
+                    <div class="flex items-start gap-3">
+                        <span id="feedback-icon" class="text-2xl"></span>
+                        <div>
+                            <h4 id="feedback-title" class="font-bold text-base"></h4>
+                            <p id="feedback-text" class="text-sm mt-0.5 leading-relaxed"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Controls -->
+            <div class="bg-slate-50 p-4 border-t border-slate-100 flex justify-between items-center">
+                <div class="text-xs font-semibold text-slate-400 flex items-center gap-1">
+                    <i class="fa-solid fa-child"></i> Grade 6 • A1 English
+                </div>
+                <button id="next-btn" onclick="nextQuestion()" class="hidden bg-purple-600 hover:bg-purple-700 text-white font-bold px-6 py-2.5 rounded-xl shadow-lg bounce-hover flex items-center gap-2">
+                    <span>Next Sentence</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Live Constructed Paragraph Preview -->
+        <div class="mt-6 bg-fuchsia-50 rounded-2xl p-5 border-2 border-fuchsia-200 shadow-sm">
+            <h3 class="font-bold text-fuchsia-900 text-sm flex items-center gap-2 mb-2">
+                <i class="fa-solid fa-feather-pointed text-fuchsia-600"></i> Your Unlocked Paragraph So Far:
+            </h3>
+            <p id="built-paragraph" class="text-slate-700 text-base leading-relaxed italic">
+                (Solve questions to unlock and build your paragraph!)
+            </p>
+        </div>
+
+    </main>
+
+    <!-- Modal: Topic Rule Guide -->
+    <div id="rule-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border-4 border-purple-400">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-purple-700 flex items-center gap-2">
+                    <i class="fa-solid fa-book-open-reader"></i> Past Obligations Helper
+                </h3>
+                <button onclick="toggleRuleHelp()" class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+            </div>
+            
+            <div class="space-y-3 text-sm text-slate-700">
+                <div class="bg-purple-50 p-3 rounded-xl border border-purple-200">
+                    <span class="font-bold text-purple-800">1. Past Obligation (Must in the past):</span>
+                    <p>Use <b>HAD TO + Base Verb (V1)</b> for rules/duties in the past.</p>
+                    <p class="text-xs text-purple-600 italic">Example: Yesterday, I <u>had to clean</u> my bedroom.</p>
+                </div>
+                <div class="bg-fuchsia-50 p-3 rounded-xl border border-fuchsia-200">
+                    <span class="font-bold text-fuchsia-800">2. No Past Obligation (Not necessary):</span>
+                    <p>Use <b>DIDN'T HAVE TO + Base Verb (V1)</b></p>
+                    <p class="text-xs text-fuchsia-600 italic">Example: On Sunday, I <u>didn't have to wake up</u> early.</p>
+                </div>
+                <div class="bg-amber-50 p-3 rounded-xl border border-amber-200">
+                    <span class="font-bold text-amber-800">3. Golden Rule:</span>
+                    <p class="text-xs text-amber-900">Never say "didn't had to" or "hadn't to". Always use <b>didn't have to + V1</b>!</p>
+                </div>
+            </div>
+
+            <button onclick="toggleRuleHelp()" class="mt-5 w-full bg-purple-600 text-white font-bold py-2.5 rounded-xl">Got It!</button>
+        </div>
+    </div>
+
+    <!-- Script Block -->
+    <script>
+        // Game Questions and Data for Topic 8
+        const quizData = [
+            {
+                topic: "Opening Sentence",
+                question: "Which sentence is the best topic sentence for a paragraph about past rules and duties?",
+                options: [
+                    "Last year, I had many important responsibilities at home and school.",
+                    "I am playing soccer with my best friends right now.",
+                    "My dog can jump higher than my sister's cat.",
+                    "I must buy a chocolate cake tomorrow."
+                ],
+                correct: 0,
+                explanation: "Paragraphs start with a general topic sentence that introduces the main idea (past duties/responsibilities).",
+                unlockedSentence: "Last year, I had many important responsibilities at home and school."
+            },
+            {
+                topic: "School Rules (Had to)",
+                question: "Choose the correct past obligation: 'Every weekday morning, I ___ wear my school uniform.'",
+                options: ["had to", "have to", "must to", "has to"],
+                correct: 0,
+                explanation: "Use 'had to' to talk about a rule or obligation in the PAST.",
+                unlockedSentence: "Every weekday morning, I had to wear my school uniform,"
+            },
+            {
+                topic: "Chore Obligations (Had to + V1)",
+                question: "Complete the sentence correctly: 'After school, I ___ my homework before playing.'",
+                options: [
+                    "had to finish",
+                    "had to finished",
+                    "didn't had to finish",
+                    "must finished"
+                ],
+                correct: 0,
+                explanation: "After 'had to', we always use the base form of the verb (V1: finish).",
+                unlockedSentence: "and after school, I had to finish my homework before going outside."
+            },
+            {
+                topic: "No Obligation (Didn't have to)",
+                question: "Choose the correct negative form: 'Luckily, on weekends I ___ get up at seven o'clock.'",
+                options: [
+                    "didn't have to",
+                    "didn't had to",
+                    "hadn't to",
+                    "don't had to"
+                ],
+                correct: 0,
+                explanation: "To say something was NOT necessary in the past, use 'didn't have to'.",
+                unlockedSentence: "Luckily, on weekends I didn't have to get up at seven o'clock."
+            },
+            {
+                topic: "Linking Words (Because / Had to)",
+                question: "Choose the best connector and structure: 'I couldn't watch TV late ___ I ___ go to bed early.'",
+                options: [
+                    "because / had to",
+                    "but / didn't have to",
+                    "so / have to",
+                    "because / don't have to"
+                ],
+                correct: 0,
+                explanation: "Use 'because' to give a reason and 'had to' for the past rule (had to go to bed early).",
+                unlockedSentence: "I couldn't watch TV late at night because I had to go to bed early."
+            },
+            {
+                topic: "Helping Family (Contrast with But)",
+                question: "Which sentence correctly contrasts a duty with a free activity using 'but'?",
+                options: [
+                    "I had to clean my room on Saturday, but I didn't have to wash the dishes.",
+                    "I didn't had to clean my room, but I had to washed the dishes.",
+                    "I had to clean my room, but I didn't had to wash dishes.",
+                    "I have to clean my room, but yesterday I must wash dishes."
+                ],
+                correct: 0,
+                explanation: "'Had to clean' (duty) pairs with 'didn't have to wash' (no duty) using base verbs!",
+                unlockedSentence: "On Saturdays, I had to clean my bedroom, but I didn't have to wash the dishes."
+            },
+            {
+                topic: "Concluding Sentence",
+                question: "What is the best closing sentence for your paragraph about past obligations?",
+                options: [
+                    "These rules helped me become more responsible and organized!",
+                    "Tomorrow is Sunday so I am sleeping all day.",
+                    "I didn't eat breakfast this morning.",
+                    "My mother has to go shopping now."
+                ],
+                correct: 0,
+                explanation: "A strong concluding sentence reflects on what you learned from those past rules!",
+                unlockedSentence: "All these rules helped me become a more responsible and organized person!"
+            }
+        ];
+
+        let currentStep = 0;
+        let score = 0;
+        let paragraphSentences = [];
+
+        // DOM Elements
+        const questionTextEl = document.getElementById('question-text');
+        const optionsContainerEl = document.getElementById('options-container');
+        const badgeTopicEl = document.getElementById('badge-topic');
+        const feedbackBoxEl = document.getElementById('feedback-box');
+        const feedbackIconEl = document.getElementById('feedback-icon');
+        const feedbackTitleEl = document.getElementById('feedback-title');
+        const feedbackTextEl = document.getElementById('feedback-text');
+        const nextBtnEl = document.getElementById('next-btn');
+        const scoreEl = document.getElementById('score');
+        const levelIndicatorEl = document.getElementById('level-indicator');
+        const progressBarEl = document.getElementById('progress-bar');
+        const builtParagraphEl = document.getElementById('built-paragraph');
+
+        // Load Question
+        function loadQuestion() {
+            const currentQ = quizData[currentStep];
+            
+            // Reset UI
+            feedbackBoxEl.classList.add('hidden');
+            nextBtnEl.classList.add('hidden');
+            optionsContainerEl.innerHTML = '';
+
+            // Update Info
+            questionTextEl.textContent = currentQ.question;
+            badgeTopicEl.textContent = `Stage ${currentStep + 1} of ${quizData.length}: ${currentQ.topic}`;
+            levelIndicatorEl.textContent = `Stage ${currentStep + 1}/${quizData.length}`;
+            progressBarEl.style.width = `${((currentStep) / quizData.length) * 100}%`;
+
+            // Create Option Buttons
+            currentQ.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-2xl border-2 border-slate-200 hover:border-purple-500 hover:bg-purple-50 font-semibold text-slate-700 transition-all bounce-hover flex items-center justify-between";
+                btn.innerHTML = `<span>${opt}</span> <i class="fa-regular fa-circle text-slate-300 text-lg"></i>`;
+                btn.onclick = () => selectOption(index, btn);
+                optionsContainerEl.appendChild(btn);
+            });
+        }
+
+        // Handle Selection
+        function selectOption(selectedIndex, btnElement) {
+            const currentQ = quizData[currentStep];
+            const isCorrect = selectedIndex === currentQ.correct;
+
+            // Disable all option buttons
+            const allBtns = optionsContainerEl.querySelectorAll('button');
+            allBtns.forEach(b => b.disabled = true);
+
+            if (isCorrect) {
+                // Correct styling
+                btnElement.className = "w-full text-left p-4 rounded-2xl border-2 border-purple-500 bg-purple-100 font-bold text-purple-900 flex items-center justify-between shadow-md";
+                btnElement.querySelector('i').className = "fa-solid fa-circle-check text-purple-600 text-xl";
+
+                // Feedback
+                feedbackBoxEl.className = "mt-6 p-4 rounded-2xl bg-purple-100 border border-purple-300 text-purple-900 flex items-start gap-3";
+                feedbackIconEl.innerHTML = `<i class="fa-solid fa-star text-amber-500"></i>`;
+                feedbackTitleEl.textContent = "Great job! (+10 pts)";
+                feedbackTextEl.textContent = currentQ.explanation;
+
+                // Update Score & Unlocked Paragraph
+                score += 10;
+                scoreEl.textContent = score;
+                paragraphSentences.push(currentQ.unlockedSentence);
+                updateParagraphPreview();
+            } else {
+                // Incorrect styling
+                btnElement.className = "w-full text-left p-4 rounded-2xl border-2 border-rose-400 bg-rose-100 font-bold text-rose-900 flex items-center justify-between shadow-md";
+                btnElement.querySelector('i').className = "fa-solid fa-circle-xmark text-rose-600 text-xl";
+
+                // Highlight correct answer
+                allBtns[currentQ.correct].className = "w-full text-left p-4 rounded-2xl border-2 border-purple-500 bg-purple-50 font-bold text-purple-800 flex items-center justify-between";
+
+                // Feedback
+                feedbackBoxEl.className = "mt-6 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-900 flex items-start gap-3";
+                feedbackIconEl.innerHTML = `<i class="fa-solid fa-lightbulb text-amber-500"></i>`;
+                feedbackTitleEl.textContent = "Let's check the rule:";
+                feedbackTextEl.textContent = currentQ.explanation;
+
+                // Still unlock sentence to maintain continuity
+                paragraphSentences.push(currentQ.unlockedSentence);
+                updateParagraphPreview();
+            }
+
+            feedbackBoxEl.classList.remove('hidden');
+            nextBtnEl.classList.remove('hidden');
+        }
+
+        // Update Paragraph Preview Text
+        function updateParagraphPreview() {
+            builtParagraphEl.textContent = paragraphSentences.join(" ");
+            builtParagraphEl.classList.remove('italic');
+        }
+
+        // Next Question
+        function nextQuestion() {
+            currentStep++;
+            if (currentStep < quizData.length) {
+                loadQuestion();
+            } else {
+                finishGame();
+            }
+        }
+
+        // Finish Game
+        function finishGame() {
+            progressBarEl.style.width = `100%`;
+            badgeTopicEl.textContent = "Paragraph Master!";
+            questionTextEl.textContent = "🎉 Fantastic! You completed your Past Obligations Paragraph!";
+            
+            optionsContainerEl.innerHTML = `
+                <div class="col-span-full text-center py-6 bg-purple-50 rounded-2xl border-2 border-purple-200">
+                    <i class="fa-solid fa-medal text-6xl text-amber-400 mb-3"></i>
+                    <h3 class="text-2xl font-bold text-purple-900">Final Score: ${score} / ${quizData.length * 10}</h3>
+                    <p class="text-slate-600 text-sm mt-1 max-w-md mx-auto">
+                        You mastered <b>had to</b> and <b>didn't have to</b> to write a complete English paragraph about past duties and obligations!
+                    </p>
+                    <button onclick="location.reload()" class="mt-5 bg-purple-600 hover:bg-purple-700 text-white font-bold px-6 py-3 rounded-xl shadow-lg bounce-hover inline-flex items-center gap-2">
+                        <i class="fa-solid fa-rotate-right"></i> Play Again
+                    </button>
+                </div>
+            `;
+
+            feedbackBoxEl.classList.add('hidden');
+            nextBtnEl.classList.add('hidden');
+        }
+
+        // Toggle Help Modal
+        function toggleRuleHelp() {
+            const modal = document.getElementById('rule-modal');
+            modal.classList.toggle('hidden');
+        }
+
+        // Initialize Game
+        window.onload = loadQuestion;
+    </script>
+</body>
+</html>```

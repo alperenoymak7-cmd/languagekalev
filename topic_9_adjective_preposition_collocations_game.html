@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic 9: Adjective + Preposition Collocations</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f0fdf4;
+        }
+        h1, h2, h3, .font-heading {
+            font-family: 'Fredoka', sans-serif;
+        }
+        .bounce-hover {
+            transition: all 0.2s ease;
+        }
+        .bounce-hover:hover {
+            transform: translateY(-3px);
+        }
+        .pulse-star {
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 flex flex-col justify-between">
+
+    <!-- Top Navigation / Header -->
+    <header class="bg-emerald-600 text-white shadow-md p-4 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <span class="text-3xl"><i class="fa-solid fa-puzzle-piece text-emerald-300"></i></span>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold leading-none">Topic 9: Word Match Master</h1>
+                    <p class="text-xs text-emerald-100 font-semibold mt-1">Adjective + Preposition Collocations (Age 11 / Grade 6)</p>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="flex items-center gap-4 bg-emerald-700/60 px-4 py-2 rounded-2xl border border-emerald-500">
+                <div class="flex items-center gap-1.5">
+                    <i class="fa-solid fa-star text-yellow-300 text-lg pulse-star"></i>
+                    <span id="score" class="font-bold text-lg">0</span>
+                </div>
+                <div class="h-5 w-px bg-emerald-500"></div>
+                <div class="flex items-center gap-1.5">
+                    <i class="fa-solid fa-trophy text-amber-300 text-lg"></i>
+                    <span id="level-indicator" class="font-bold text-sm">Q 1/10</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-4xl mx-auto w-full p-4 flex-grow flex flex-col justify-center">
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-200 h-3 rounded-full mb-6 overflow-hidden shadow-inner">
+            <div id="progress-bar" class="bg-emerald-500 h-full w-[10%] transition-all duration-500 ease-out"></div>
+        </div>
+
+        <!-- Game Screen Card -->
+        <div class="bg-white rounded-3xl shadow-xl border-4 border-emerald-200 overflow-hidden flex flex-col min-h-[420px]">
+            
+            <!-- Question Header -->
+            <div class="bg-emerald-50 p-6 border-b border-emerald-100">
+                <div class="flex justify-between items-center mb-2">
+                    <span id="badge-topic" class="bg-emerald-200 text-emerald-800 text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider">
+                        Question 1 of 10
+                    </span>
+                    <button onclick="toggleRuleHelp()" class="text-xs text-emerald-700 font-bold hover:underline flex items-center gap-1">
+                        <i class="fa-solid fa-circle-info text-emerald-500"></i> Cheat Sheet
+                    </button>
+                </div>
+                <h2 id="question-text" class="text-lg md:text-xl font-bold text-slate-800 mt-1">
+                    Loading question...
+                </h2>
+            </div>
+
+            <!-- Options Area -->
+            <div class="p-6 flex-grow flex flex-col justify-center">
+                <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Dynamic option buttons -->
+                </div>
+
+                <!-- Feedback Box -->
+                <div id="feedback-box" class="hidden mt-6 p-4 rounded-2xl transition-all duration-300">
+                    <div class="flex items-start gap-3">
+                        <span id="feedback-icon" class="text-2xl"></span>
+                        <div>
+                            <h4 id="feedback-title" class="font-bold text-base"></h4>
+                            <p id="feedback-text" class="text-sm mt-0.5 leading-relaxed"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Controls -->
+            <div class="bg-slate-50 p-4 border-t border-slate-100 flex justify-between items-center">
+                <div class="text-xs font-semibold text-slate-400 flex items-center gap-1">
+                    <i class="fa-solid fa-child"></i> Grade 6 • A1 English
+                </div>
+                <button id="next-btn" onclick="nextQuestion()" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-2.5 rounded-xl shadow-lg bounce-hover flex items-center gap-2">
+                    <span>Next Question</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Collocation Match Memory Strip -->
+        <div class="mt-6 bg-teal-50 rounded-2xl p-4 border-2 border-teal-200 shadow-sm">
+            <h3 class="font-bold text-teal-900 text-sm flex items-center gap-2 mb-2">
+                <i class="fa-solid fa-lightbulb text-teal-600"></i> Collocation Word Pairs Collected:
+            </h3>
+            <div id="collocation-tags" class="flex flex-wrap gap-2 text-xs font-bold text-teal-800">
+                <span class="bg-teal-200/70 px-3 py-1 rounded-full border border-teal-300">afraid of</span>
+                <span class="bg-teal-200/70 px-3 py-1 rounded-full border border-teal-300">scared of</span>
+                <span class="bg-teal-200/70 px-3 py-1 rounded-full border border-teal-300">interested in</span>
+                <span class="bg-teal-200/70 px-3 py-1 rounded-full border border-teal-300">different from</span>
+                <span class="bg-teal-200/70 px-3 py-1 rounded-full border border-teal-300">excited about</span>
+                <span class="bg-teal-200/70 px-3 py-1 rounded-full border border-teal-300">worried about</span>
+                <span class="bg-teal-200/70 px-3 py-1 rounded-full border border-teal-300">good at / better at</span>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal: Topic Cheat Sheet -->
+    <div id="rule-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border-4 border-emerald-400">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-emerald-700 flex items-center gap-2">
+                    <i class="fa-solid fa-book-bookmark"></i> Preposition Match Rules
+                </h3>
+                <button onclick="toggleRuleHelp()" class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+            </div>
+            
+            <div class="space-y-2.5 text-xs md:text-sm text-slate-700">
+                <div class="bg-emerald-50 p-2.5 rounded-xl border border-emerald-200 flex justify-between items-center">
+                    <span class="font-bold text-emerald-900">Fear:</span>
+                    <span class="font-mono bg-white px-2 py-1 rounded border text-emerald-700">afraid OF / scared OF</span>
+                </div>
+                <div class="bg-emerald-50 p-2.5 rounded-xl border border-emerald-200 flex justify-between items-center">
+                    <span class="font-bold text-emerald-900">Hobby / Curiosity:</span>
+                    <span class="font-mono bg-white px-2 py-1 rounded border text-emerald-700">interested IN</span>
+                </div>
+                <div class="bg-emerald-50 p-2.5 rounded-xl border border-emerald-200 flex justify-between items-center">
+                    <span class="font-bold text-emerald-900">Not the same:</span>
+                    <span class="font-mono bg-white px-2 py-1 rounded border text-emerald-700">different FROM</span>
+                </div>
+                <div class="bg-emerald-50 p-2.5 rounded-xl border border-emerald-200 flex justify-between items-center">
+                    <span class="font-bold text-emerald-900">Happy anticipation:</span>
+                    <span class="font-mono bg-white px-2 py-1 rounded border text-emerald-700">excited ABOUT</span>
+                </div>
+                <div class="bg-emerald-50 p-2.5 rounded-xl border border-emerald-200 flex justify-between items-center">
+                    <span class="font-bold text-emerald-900">Anxious thoughts:</span>
+                    <span class="font-mono bg-white px-2 py-1 rounded border text-emerald-700">worried ABOUT</span>
+                </div>
+                <div class="bg-emerald-50 p-2.5 rounded-xl border border-emerald-200 flex justify-between items-center">
+                    <span class="font-bold text-emerald-900">Skill / Talent:</span>
+                    <span class="font-mono bg-white px-2 py-1 rounded border text-emerald-700">good AT / better AT</span>
+                </div>
+            </div>
+
+            <button onclick="toggleRuleHelp()" class="mt-5 w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl">Got It!</button>
+        </div>
+    </div>
+
+    <!-- Script Block -->
+    <script>
+        // Quiz Data for Topic 9
+        const quizData = [
+            {
+                question: "My little brother is afraid ___ spiders and dark rooms.",
+                options: ["of", "in", "about", "from"],
+                correct: 0,
+                explanation: "We always say 'afraid OF' or 'scared OF' when something causes fear."
+            },
+            {
+                question: "Are you interested ___ science and outer space?",
+                options: ["in", "at", "about", "from"],
+                correct: 0,
+                explanation: "We use 'interested IN' when talking about hobbies or subjects we like."
+            },
+            {
+                question: "My school uniform is different ___ your uniform.",
+                options: ["from", "with", "of", "in"],
+                correct: 0,
+                explanation: "When two things are not the same, we say 'different FROM'."
+            },
+            {
+                question: "We are very excited ___ our upcoming school trip to the zoo!",
+                options: ["about", "of", "in", "at"],
+                correct: 0,
+                explanation: "When you feel happy about a future event, use 'excited ABOUT'."
+            },
+            {
+                question: "Don't be worried ___ the math exam. You studied hard!",
+                options: ["about", "from", "at", "in"],
+                correct: 0,
+                explanation: "When you feel anxious or concerned, use 'worried ABOUT'."
+            },
+            {
+                question: "She is really good ___ playing the piano and drawing pictures.",
+                options: ["at", "in", "about", "from"],
+                correct: 0,
+                explanation: "We use 'good AT' to talk about skills and talents."
+            },
+            {
+                question: "Tim is scared ___ big dogs, so he walks on the other side of the street.",
+                options: ["of", "about", "from", "in"],
+                correct: 0,
+                explanation: "Just like 'afraid of', we say 'scared OF'."
+            },
+            {
+                question: "This year, Alex is much better ___ English than last year.",
+                options: ["at", "from", "in", "about"],
+                correct: 0,
+                explanation: "The comparative form of 'good at' is 'better AT'."
+            },
+            {
+                question: "My cat's color is completely different ___ my neighbor's cat.",
+                options: ["from", "at", "about", "in"],
+                correct: 0,
+                explanation: "Remember: 'different' takes the preposition 'FROM'."
+            },
+            {
+                question: "Is your mom worried ___ your test result?",
+                options: ["about", "of", "in", "from"],
+                correct: 0,
+                explanation: "'Worried' always goes with 'ABOUT'."
+            }
+        ];
+
+        let currentStep = 0;
+        let score = 0;
+
+        // DOM Elements
+        const questionTextEl = document.getElementById('question-text');
+        const optionsContainerEl = document.getElementById('options-container');
+        const badgeTopicEl = document.getElementById('badge-topic');
+        const feedbackBoxEl = document.getElementById('feedback-box');
+        const feedbackIconEl = document.getElementById('feedback-icon');
+        const feedbackTitleEl = document.getElementById('feedback-title');
+        const feedbackTextEl = document.getElementById('feedback-text');
+        const nextBtnEl = document.getElementById('next-btn');
+        const scoreEl = document.getElementById('score');
+        const levelIndicatorEl = document.getElementById('level-indicator');
+        const progressBarEl = document.getElementById('progress-bar');
+
+        // Load Question
+        function loadQuestion() {
+            const currentQ = quizData[currentStep];
+            
+            // Reset UI
+            feedbackBoxEl.classList.add('hidden');
+            nextBtnEl.classList.add('hidden');
+            optionsContainerEl.innerHTML = '';
+
+            // Update Info
+            questionTextEl.textContent = currentQ.question;
+            badgeTopicEl.textContent = `Question ${currentStep + 1} of ${quizData.length}`;
+            levelIndicatorEl.textContent = `Q ${currentStep + 1}/${quizData.length}`;
+            progressBarEl.style.width = `${((currentStep + 1) / quizData.length) * 100}%`;
+
+            // Create Option Buttons
+            currentQ.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-2xl border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 font-bold text-slate-700 transition-all bounce-hover flex items-center justify-between";
+                btn.innerHTML = `<span>${opt}</span> <i class="fa-regular fa-circle text-slate-300 text-lg"></i>`;
+                btn.onclick = () => selectOption(index, btn);
+                optionsContainerEl.appendChild(btn);
+            });
+        }
+
+        // Handle Selection
+        function selectOption(selectedIndex, btnElement) {
+            const currentQ = quizData[currentStep];
+            const isCorrect = selectedIndex === currentQ.correct;
+
+            // Disable all option buttons
+            const allBtns = optionsContainerEl.querySelectorAll('button');
+            allBtns.forEach(b => b.disabled = true);
+
+            if (isCorrect) {
+                // Correct styling
+                btnElement.className = "w-full text-left p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-100 font-bold text-emerald-900 flex items-center justify-between shadow-md";
+                btnElement.querySelector('i').className = "fa-solid fa-circle-check text-emerald-600 text-xl";
+
+                // Feedback
+                feedbackBoxEl.className = "mt-6 p-4 rounded-2xl bg-emerald-100 border border-emerald-300 text-emerald-900 flex items-start gap-3";
+                feedbackIconEl.innerHTML = `<i class="fa-solid fa-star text-amber-500"></i>`;
+                feedbackTitleEl.textContent = "Correct! (+10 pts)";
+                feedbackTextEl.textContent = currentQ.explanation;
+
+                score += 10;
+                scoreEl.textContent = score;
+            } else {
+                // Incorrect styling
+                btnElement.className = "w-full text-left p-4 rounded-2xl border-2 border-rose-400 bg-rose-100 font-bold text-rose-900 flex items-center justify-between shadow-md";
+                btnElement.querySelector('i').className = "fa-solid fa-circle-xmark text-rose-600 text-xl";
+
+                // Highlight correct answer
+                allBtns[currentQ.correct].className = "w-full text-left p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50 font-bold text-emerald-800 flex items-center justify-between";
+
+                // Feedback
+                feedbackBoxEl.className = "mt-6 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-900 flex items-start gap-3";
+                feedbackIconEl.innerHTML = `<i class="fa-solid fa-lightbulb text-amber-500"></i>`;
+                feedbackTitleEl.textContent = "Let's learn this pair:";
+                feedbackTextEl.textContent = currentQ.explanation;
+            }
+
+            feedbackBoxEl.classList.remove('hidden');
+            nextBtnEl.classList.remove('hidden');
+        }
+
+        // Next Question
+        function nextQuestion() {
+            currentStep++;
+            if (currentStep < quizData.length) {
+                loadQuestion();
+            } else {
+                finishGame();
+            }
+        }
+
+        // Finish Game
+        function finishGame() {
+            progressBarEl.style.width = `100%`;
+            badgeTopicEl.textContent = "Collocation Champion!";
+            questionTextEl.textContent = "🎉 Awesome! You completed Topic 9!";
+            
+            optionsContainerEl.innerHTML = `
+                <div class="col-span-full text-center py-6 bg-emerald-50 rounded-2xl border-2 border-emerald-200">
+                    <i class="fa-solid fa-award text-6xl text-amber-400 mb-3"></i>
+                    <h3 class="text-2xl font-bold text-emerald-900">Final Score: ${score} / ${quizData.length * 10}</h3>
+                    <p class="text-slate-600 text-sm mt-1 max-w-md mx-auto">
+                        You mastered <b>Adjective + Preposition Collocations</b>! You know which prepositions go with afraid, interested, excited, worried, good, and different.
+                    </p>
+                    <button onclick="location.reload()" class="mt-5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-xl shadow-lg bounce-hover inline-flex items-center gap-2">
+                        <i class="fa-solid fa-rotate-right"></i> Play Again
+                    </button>
+                </div>
+            `;
+
+            feedbackBoxEl.classList.add('hidden');
+            nextBtnEl.classList.add('hidden');
+        }
+
+        // Toggle Help Modal
+        function toggleRuleHelp() {
+            const modal = document.getElementById('rule-modal');
+            modal.classList.toggle('hidden');
+        }
+
+        // Initialize Game
+        window.onload = loadQuestion;
+    </script>
+</body>
+</html>
